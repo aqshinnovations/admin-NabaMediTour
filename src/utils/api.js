@@ -1,5 +1,5 @@
 import axios from "axios"; 
-// import { isAuthenticated, getAccessToken } from './session'
+import { isAuthenticated, getAccessToken } from './session'
 
 const baseUrl = 'http://localhost:8000/';
 
@@ -7,7 +7,9 @@ const baseUrl = 'http://localhost:8000/';
 const apiUrl = {
   baseUrl: `${baseUrl}`,
   patients: `${baseUrl}patients`,
+  signIn:`${baseUrl}account/sign-in/`  ,
   contactUs: `${baseUrl}patients/patients-data/`,
+  Users:`${baseUrl}account/members/`
 
 
 
@@ -54,7 +56,7 @@ export function apiCallSecureGet(api, response, error) {
     .get(api,
       {
         headers: {
-          // 'Authorization': `Token ${getAccessToken()}`
+          'Authorization': `Bearer ${getAccessToken()}`
         }
       }
     )
@@ -89,7 +91,7 @@ export function apiCallPostWithForm(api, form, response, error) {
   axios.post(api, form, {
       headers: {
         "Content-Type": "multipart/form-data",
-        // 'Authorization': `Token ${getAccessToken()}`
+        // 'Authorization': `Bearer ${getAccessToken()}`
       },
     })
     .then((res) => {
@@ -122,7 +124,7 @@ export function apiCallPutWithForm(api, form, response, error) {
   axios.put(api, form, {
       headers: {
         "Content-Type": "multipart/form-data",
-        // 'Authorization': `Token ${getAccessToken()}`
+        // 'Authorization': `Bearer ${getAccessToken()}`
       },
     })
     .then((res) => {
@@ -158,7 +160,7 @@ export function uploadFile(api, name, file, response, error) {
   axios.post(api, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
-        // 'Authorization': `Token ${getAccessToken()}`
+        // 'Authorization': `Bearer ${getAccessToken()}`
       },
     })
     .then((res) => {
@@ -191,7 +193,7 @@ export function apiCallPostFormData(api, formData, response, error) {
   axios.post(api, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
-        'Authorization': `Token ${getAccessToken()}`
+        'Authorization': `Bearer ${getAccessToken()}`
       },
     })
     .then((res) => {
@@ -225,7 +227,7 @@ export function apiCallSecureDelete(api, id, response, error) {
     .delete(url,
       {
         headers: {
-          // 'Authorization': `Token ${getAccessToken()}`
+          'Authorization': `Bearer ${getAccessToken()}`
         }
       }
     )
@@ -297,7 +299,7 @@ export function apiPostSecure(api, data, response, onError) {
       data,
       {
         headers: {
-          'Authorization': `Token ${getAccessToken()}`
+          'Authorization': `Bearer ${getAccessToken()}`
         }
       }
     )

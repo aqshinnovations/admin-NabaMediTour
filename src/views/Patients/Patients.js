@@ -45,7 +45,7 @@ function Patients() {
     apiCallUnsecureGet(
       apiUrl.contactUs,
       (response) => {
-        console.log("bots", response.list);
+        console.log("Patients", response.list);
         setPatients(response.list);
       },
       (error) => {

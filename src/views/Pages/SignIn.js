@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 // Chakra imports
 import {
   Box,
@@ -17,15 +17,49 @@ import {
 // Assets
 import signInImage from "assets/img/signInImage.png";
 import { FaApple, FaFacebook, FaGoogle } from "react-icons/fa";
+import { apiPostUnsecure } from "utils/api";
+import { useHistory } from "react-router-dom";
+import { showError, showSucess } from "utils/toast";
+import { saveUser } from "utils/session";
+import { apiUrl } from "utils/api";
 
 function SignIn() {
-  // Chakra color mode
   const textColor = useColorModeValue("gray.700", "white");
   const bgForm = useColorModeValue("white", "navy.800");
   const titleColor = useColorModeValue("gray.700", "blue.500");
   const colorIcons = useColorModeValue("gray.700", "white");
   const bgIcons = useColorModeValue("trasnparent", "navy.700");
   const bgIconsHover = useColorModeValue("gray.50", "whiteAlpha.100");
+
+  const history = useHistory();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = () => {
+    if (!email || !password) {
+      showError("Email and password are required");
+      return;
+    }
+
+    const data = {
+      username: email,
+      password: password,
+    };
+    apiPostUnsecure(
+      apiUrl.signIn,
+      data,
+      (res) => {
+        showSucess("Login successful 🎉");
+        saveUser(res);
+        history.replace("/admin/dashboard");
+      },
+      (errMsg) => {
+        showError(errMsg || "Login failed ");
+      }
+    );
+  };
+
   return (
     <Flex position="relative" mb="10px">
       <Flex
@@ -83,6 +117,8 @@ function SignIn() {
                 placeholder="Your username or email"
                 mb="24px"
                 size="lg"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
                 Password
@@ -95,6 +131,8 @@ function SignIn() {
                 placeholder="Your password"
                 mb="24px"
                 size="lg"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <FormControl display="flex" alignItems="center" mb="24px">
                 <Switch id="remember-login" colorScheme="blue" me="10px" />
@@ -109,6 +147,7 @@ function SignIn() {
                 w="100%"
                 h="45"
                 mb="24px"
+                onClick={handleLogin} // ✅ call login
               >
                 SIGN IN
               </Button>

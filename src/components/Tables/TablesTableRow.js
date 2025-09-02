@@ -13,7 +13,18 @@ import React from "react";
 import { FaPencilAlt, FaTrashAlt, FaFilePdf } from "react-icons/fa";
 
 function TablesTableRow(props) {
-  const { logo, name, email, subdomain, domain, status, date, isLast } = props;
+  const {
+    logo,
+    name,
+    email,
+    subdomain,
+    domain,
+    status,
+    date,
+    isLast,
+    onEdit, // new prop
+    onDelete,
+  } = props;
   const textColor = useColorModeValue("gray.500", "white");
   const titleColor = useColorModeValue("gray.700", "white");
   const bgStatus = useColorModeValue("gray.400", "navy.900");
@@ -78,6 +89,7 @@ function TablesTableRow(props) {
           variant="no-effects"
           mb={{ sm: "10px", md: "0px" }}
           me={{ md: "12px" }}
+          onClick={onDelete} // click handler
         >
           <Flex color="red.500" cursor="pointer" align="center" p="12px">
             <Icon as={FaTrashAlt} me="4px" />
@@ -86,7 +98,12 @@ function TablesTableRow(props) {
             </Text>
           </Flex>
         </Button>
-        <Button p="0px" bg="transparent" variant="no-effects">
+        <Button
+          p="0px"
+          bg="transparent"
+          variant="no-effects"
+          onClick={onEdit} // click handler
+        >
           <Flex color={textColor} cursor="pointer" align="center" p="12px">
             <Icon as={FaPencilAlt} me="4px" />
             <Text fontSize="sm" fontWeight="semibold">
@@ -94,7 +111,6 @@ function TablesTableRow(props) {
             </Text>
           </Flex>
         </Button>
-      
       </Td>
     </Tr>
   );
