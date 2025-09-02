@@ -30,6 +30,11 @@ function TablesTableRow(props) {
   const bgStatus = useColorModeValue("gray.400", "navy.900");
   const borderColor = useColorModeValue("gray.200", "gray.600");
 
+  const statusColors = {
+    S: "green.400",
+    A: "blue.500",
+    U: "red",
+  };
   return (
     <Tr>
       <Td
@@ -68,8 +73,8 @@ function TablesTableRow(props) {
       </Td>
       <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
         <Badge
-          bg={status === "Online" ? "green.400" : bgStatus}
-          color={status === "Online" ? "white" : "white"}
+          bg={statusColors[status] || bgStatus} // fallback to bgStatus if not matched
+          color="white"
           fontSize="16px"
           p="3px 10px"
           borderRadius="8px"

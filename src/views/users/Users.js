@@ -15,6 +15,8 @@ import {
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
+  useColorMode,
+  useDisclosure,
 } from "@chakra-ui/react";
 // Custom components
 import Card from "components/Card/Card.js";
@@ -25,9 +27,17 @@ import TablesTableRow from "components/Tables/TablesTableRow";
 import { tablesProjectData, tablesTableData } from "variables/general";
 import { apiCallSecureGet, apiCallSecureDelete, apiUrl } from "utils/api";
 import { showSucess, showError } from "utils/toast";
+import AddUser from "./AddUser";
+
 function Users() {
   const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
+  const { colorMode } = useColorMode();
+  const {
+    isOpen: isAddUserOpen,
+    onOpen: openAddUser,
+    onClose: closeAddUser,
+  } = useDisclosure();
 
   const [users, setUsers] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -71,7 +81,7 @@ function Users() {
         },
         (error) => {
           console.log("Delete error", error);
-          showError(error.msg || "something went wrong please try again");
+          showError(error || "something went wrong please try again");
           setIsOpen(false);
         }
       );
@@ -83,10 +93,19 @@ function Users() {
       <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
         <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
           <CardHeader p="6px 0px 22px 0px">
-            <Text fontSize="xl" color={textColor} fontWeight="bold">
-              Users Table
-            </Text>
+            <Flex align="center" justify="space-between" w="100%">
+              <Text fontSize="xl" color={textColor} fontWeight="bold">
+                Users Table
+              </Text>
+              <Button
+                variant={colorMode === "primary" ? "dark" : "primary"}
+                onClick={openAddUser}
+              >
+                ADD NEW USER
+              </Button>
+            </Flex>
           </CardHeader>
+
           <CardBody>
             <Table variant="simple" color={textColor}>
               <Thead>
@@ -112,6 +131,7 @@ function Users() {
                     <TablesTableRow
                       key={user.accountId || index}
                       id={user.accountId}
+                      logo={user.photo_url} // <-- Pass the image URL here
                       name={
                         `${user.first_name || ""} ${
                           user.last_name || ""
@@ -125,9 +145,11 @@ function Users() {
                     />
                   ))
                 ) : (
-                  <Text fontSize="md" color="gray.500" fontWeight="bold">
-                    No Users Data Found
-                  </Text>
+                  <CardBody m={10}>
+                    <Text fontSize="md" color="gray.500" fontWeight="bold">
+                      No Users Data Found
+                    </Text>
+                  </CardBody>
                 )}
               </Tbody>
             </Table>
@@ -163,6 +185,12 @@ function Users() {
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
+
+      <AddUser
+        isOpen={isAddUserOpen}
+        onClose={closeAddUser}
+        onUserAdded={UsersData}
+      />
     </>
   );
 }
