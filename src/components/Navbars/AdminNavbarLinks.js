@@ -19,12 +19,13 @@ import avatar1 from "assets/img/avatars/avatar1.png";
 import avatar2 from "assets/img/avatars/avatar2.png";
 import avatar3 from "assets/img/avatars/avatar3.png";
 // Custom Icons
+import { FiLogOut } from "react-icons/fi";
 import {
   ArgonLogoDark,
   ArgonLogoLight,
   ChakraLogoDark,
   ChakraLogoLight,
-  ProfileIcon,
+  ProfileIcon ,
   SettingsIcon,
 } from "components/Icons/Icons";
 // Custom Components
@@ -33,8 +34,11 @@ import { SearchBar } from "components/Navbars/SearchBar/SearchBar";
 import { SidebarResponsive } from "components/Sidebar/Sidebar";
 import React from "react";
 import { NavLink } from "react-router-dom";
-import routes from "routes.js";
+import routes from "routes/dashRoutes";
 import IndocsLogo from "assets/logo.png";
+import { useHistory } from "react-router-dom";
+
+
 export default function HeaderLinks(props) {
   const {
     variant,
@@ -47,6 +51,7 @@ export default function HeaderLinks(props) {
   } = props;
 
   const { colorMode } = useColorMode();
+  const history = useHistory();
 
   // Chakra Color Mode
   let navbarIcon =
@@ -57,6 +62,11 @@ export default function HeaderLinks(props) {
   if (secondary) {
     navbarIcon = "white";
   }
+
+  function handleLogout(history) {
+  sessionStorage.clear();
+  history.push("/auth/signin");
+}
   return (
     <Flex
       pe={{ sm: "0px", md: "16px" }}
@@ -76,18 +86,19 @@ export default function HeaderLinks(props) {
             document.documentElement.dir ? (
               ""
             ) : (
-              <ProfileIcon color={navbarIcon} w="22px" h="22px" me="0px" />
+              <FiLogOut  color={navbarIcon} w="22px" h="22px" me="0px" />
             )
           }
           leftIcon={
             document.documentElement.dir ? (
-              <ProfileIcon color={navbarIcon} w="22px" h="22px" me="0px" />
+              <FiLogOut  color={navbarIcon} w="22px" h="22px" me="0px" />
             ) : (
               ""
             )
           }
+          onClick={() => handleLogout(history)} 
         >
-          <Text display={{ sm: "none", md: "flex" }}>Sign In</Text>
+          <Text display={{ sm: "none", md: "flex" }}>Log Out</Text>
         </Button>
       </NavLink>
       <SidebarResponsive

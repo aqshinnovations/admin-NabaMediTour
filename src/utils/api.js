@@ -9,6 +9,8 @@ const apiUrl = {
   signIn: `${baseUrl}account/sign-in/`,
   contactUs: `${baseUrl}patients/patients-data/`,
   Users: `${baseUrl}account/members/`,
+  Profile: `${baseUrl}account/profile/`,
+
 };
 
 export { baseUrl, apiUrl };

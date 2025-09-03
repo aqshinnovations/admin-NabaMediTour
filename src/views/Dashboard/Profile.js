@@ -1,4 +1,4 @@
-// Chakra imports
+import React,{useEffect,useState} from "react";// Chakra imports
 import {
   Box,
   Button,
@@ -43,7 +43,6 @@ import { HSeparator } from "components/Separator/Separator";
 import BillingRow from "components/Tables/BillingRow";
 import InvoicesRow from "components/Tables/InvoicesRow";
 import TransactionRow from "components/Tables/TransactionRow";
-import React from "react";
 import {
   FaPaypal,
   FaPencilAlt,
@@ -99,7 +98,7 @@ import {
   FaTwitter,
 } from "react-icons/fa";
 import { IoDocumentsSharp } from "react-icons/io5";
-
+import { apiCallSecureGet,apiUrl } from "utils/api";
 function Profile() {
   const iconBlue = useColorModeValue("blue.500", "blue.500");
   const iconBoxInside = useColorModeValue("white", "white");
@@ -115,6 +114,26 @@ function Profile() {
   const bgProfile = useColorModeValue("hsla(0,0%,100%,.8)", "navy.800");
   const borderProfileColor = useColorModeValue("white", "transparent");
   const emailColor = useColorModeValue("gray.400", "gray.300");
+
+
+  const [profileDetails, setProfileDetails] = useState("")
+   useEffect(() => {
+      profileData();
+    }, []);
+  
+    const profileData = () => {
+      console.log("url", apiUrl.Profile)
+      apiCallSecureGet(
+        apiUrl.Profile,
+        (response) => {
+          console.log("Profile", response);
+          setProfileDetails(response.account);
+        },
+        (error) => {
+          console.log("error", error);
+        }
+      );
+    };
 
   return (
     <>
@@ -142,7 +161,7 @@ function Profile() {
           >
             <Avatar
               me={{ md: "22px" }}
-              src={avatar5}
+              src={profileDetails.photo_url}
               w="80px"
               h="80px"
               borderRadius="15px"
@@ -154,14 +173,14 @@ function Profile() {
                 fontWeight="bold"
                 ms={{ sm: "8px", md: "0px" }}
               >
-                Alec Thompson
+               {profileDetails.first_name} {profileDetails.last_name}
               </Text>
               <Text
                 fontSize={{ sm: "sm", md: "md" }}
                 color={emailColor}
                 fontWeight="semibold"
               >
-                alec@simmmple.com
+              {profileDetails.email}
               </Text>
             </Flex>
           </Flex>
@@ -185,7 +204,7 @@ function Profile() {
                     Full Name:{" "}
                   </Text>
                   <Text fontSize="md" color="gray.400" fontWeight="400">
-                    SHAIKH AAQEEL
+                    {profileDetails.first_name} {profileDetails.last_name}
                   </Text>
                 </Flex>
                 <Flex align="center" mb="18px">
@@ -198,7 +217,7 @@ function Profile() {
                     Mobile:{" "}
                   </Text>
                   <Text fontSize="md" color="gray.400" fontWeight="400">
-                    (+91) 8468849455
+                    {profileDetails.mobile}
                   </Text>
                 </Flex>
                 <Flex align="center" mb="18px">
@@ -211,10 +230,10 @@ function Profile() {
                     Email:{" "}
                   </Text>
                   <Text fontSize="md" color="gray.400" fontWeight="400">
-                    aaqil.dev@gmail.com
+                    {profileDetails.email}
                   </Text>
                 </Flex>
-                <Flex align="center" mb="18px">
+                {/* <Flex align="center" mb="18px">
                   <Text
                     fontSize="md"
                     color={textColor}
@@ -226,89 +245,18 @@ function Profile() {
                   <Text fontSize="md" color="gray.400" fontWeight="400">
                     Indocs Care Medical Service
                   </Text>
-                </Flex>
+                </Flex> */}
               </Flex>
             </CardBody>
           </Card>
-          <Card p="16px">
+          {/* <Card p="16px">
             <CardHeader p="12px 5px" mb="12px">
               <Text fontSize="lg" color={textColor} fontWeight="bold">
                 Change Password
               </Text>
             </CardHeader>
             <CardBody px="5px">
-              {/* <Flex direction='column'>
-              <Text fontSize='sm' color='gray.400' fontWeight='600' mb='20px'>
-                ACCOUNT
-              </Text>
-              <Flex align='center' mb='20px'>
-                <Switch colorScheme='blue' me='10px' />
-                <Text
-                  noOfLines={1}
-                  fontSize='md'
-                  color='gray.400'
-                  fontWeight='400'>
-                  Email me when someone follows me
-                </Text>
-              </Flex>
-              <Flex align='center' mb='20px'>
-                <Switch colorScheme='blue' me='10px' />
-                <Text
-                  noOfLines={1}
-                  fontSize='md'
-                  color='gray.400'
-                  fontWeight='400'>
-                  Email me when someone answers on my post
-                </Text>
-              </Flex>
-              <Flex align='center' mb='20px'>
-                <Switch colorScheme='blue' me='10px' />
-                <Text
-                  noOfLines={1}
-                  fontSize='md'
-                  color='gray.400'
-                  fontWeight='400'>
-                  Email me when someone mentions me
-                </Text>
-              </Flex>
-              <Text
-                fontSize='sm'
-                color='gray.400'
-                fontWeight='600'
-                m='6px 0px 20px 0px'>
-                APPLICATION
-              </Text>
-              <Flex align='center' mb='20px'>
-                <Switch colorScheme='blue' me='10px' />
-                <Text
-                  noOfLines={1}
-                  fontSize='md'
-                  color='gray.400'
-                  fontWeight='400'>
-                  New launches and projects
-                </Text>
-              </Flex>
-              <Flex align='center' mb='20px'>
-                <Switch colorScheme='blue' me='10px' />
-                <Text
-                  noOfLines={1}
-                  fontSize='md'
-                  color='gray.400'
-                  fontWeight='400'>
-                  Monthly product changes
-                </Text>
-              </Flex>
-              <Flex align='center' mb='20px'>
-                <Switch colorScheme='blue' me='10px' />
-                <Text
-                  noOfLines={1}
-                  fontSize='md'
-                  color='gray.400'
-                  fontWeight='400'>
-                  Subscribe to newsletter
-                </Text>
-              </Flex>
-            </Flex> */}
+          
               <FormControl>
                 <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
                   Old Password
@@ -359,7 +307,7 @@ function Profile() {
                 </Button>
               </FormControl>
             </CardBody>
-          </Card>
+          </Card> */}
 
           {/* <Card p='16px'>
           <CardHeader p='12px 5px' mb='12px'>

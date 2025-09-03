@@ -102,7 +102,9 @@ function Patients() {
                   <Th borderColor={borderColor} color="gray.400">
                     Report
                   </Th>
-                  <Th borderColor={borderColor} color="gray.400"></Th>
+                  <Th borderColor={borderColor} color="gray.400">
+                    Date
+                  </Th>
                   <Th borderColor={borderColor} color="gray.400">
                     Action
                   </Th>
@@ -119,6 +121,11 @@ function Patients() {
                       email={row.email || "Email not provided"}
                       subdomain={row.mobile || "Mobile number not available"}
                       status={row.status || "Status not available"}
+                      date={
+                        row.updated
+                          ? new Date(row.updated).toISOString().split("T")[0]
+                          : "No Data"
+                      }
                       AboutHealth={
                         row.aboutHealth || "No health details provided"
                       }
