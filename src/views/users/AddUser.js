@@ -15,6 +15,7 @@ import {
   Input,
   useColorModeValue,
   useColorMode,
+  SimpleGrid,
 } from "@chakra-ui/react";
 import { apiPostSecure, apiUrl } from "utils/api";
 import { showError, showSucess } from "utils/toast";
@@ -73,13 +74,13 @@ const AddUser = ({ isOpen, onClose, onUserAdded }) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent maxW="800px">
         <ModalHeader>Add New User</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody pb={4}>
-          <Flex direction="column" w="100%" p="30px">
+        <ModalCloseButton color="red.500" />
+        <ModalBody>
+          <Flex direction="column" w="100%" p="20px">
             <HStack spacing={4} mb={4}>
               <FormControl>
                 <FormLabel fontSize="sm" fontWeight="normal">
@@ -130,25 +131,16 @@ const AddUser = ({ isOpen, onClose, onUserAdded }) => {
             </HStack>
 
             {/* Row 3: Role */}
-
-            <RoleSelect
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-            />
-
+            <SimpleGrid columns={2} spacing={4} mb={4}>
+              <RoleSelect
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+              />
+            </SimpleGrid>
             <Flex mt={4} w="50%" ml="auto" justify="flex-end" gap={2}>
-              <Button
-                fontWeight="bold"
-                w="48%"
-                h="45px"
-                onClick={handleAddUser}
-                variant={colorMode === "dark" ? "dark" : "primary"}
-              >
+              <Button onClick={onClose}>Cancel</Button>
+              <Button colorScheme="blue" onClick={handleAddUser} ml={3}>
                 ADD USER
-              </Button>
-
-              <Button fontWeight="bold" w="48%" h="45px" onClick={onClose}>
-                CLOSE
               </Button>
             </Flex>
           </Flex>

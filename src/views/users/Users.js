@@ -27,6 +27,8 @@ import TablesTableRow from "components/Tables/TablesTableRow";
 import { tablesProjectData, tablesTableData } from "variables/general";
 import { apiCallSecureGet, apiCallSecureDelete, apiUrl } from "utils/api";
 import { showSucess, showError } from "utils/toast";
+import EditUser from "./EditUser";
+
 import AddUser from "./AddUser";
 
 function Users() {
@@ -42,6 +44,9 @@ function Users() {
   const [users, setUsers] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+const [isEditUserOpen, setIsEditUserOpen] = useState(false);
+const [editUser, setEditUser] = useState(null);
+
   const cancelRef = useRef();
 
   useEffect(() => {
@@ -87,6 +92,11 @@ function Users() {
       );
     }
   };
+
+  const handleEditClick = (user) => {
+  setEditUser(user);
+  setIsEditUserOpen(true);
+};
 
   return (
     <>
@@ -141,7 +151,8 @@ function Users() {
                       email={user.email || "Email not available"}
                       status={user.role || "Role not provided"}
                       isLast={index === users.length - 1}
-                      onDelete={() => handleDeleteClick(user)} // ✅ PROBLEM: prop name mismatch
+                      onDelete={() => handleDeleteClick(user)} 
+                       onEdit={() => handleEditClick(user)} 
                     />
                   ))
                 ) : (
@@ -191,6 +202,13 @@ function Users() {
         onClose={closeAddUser}
         onUserAdded={UsersData}
       />
+      <EditUser
+  isOpen={isEditUserOpen}
+  onClose={() => setIsEditUserOpen(false)}
+  user={editUser}
+  onUserUpdated={UsersData}
+/>
+
     </>
   );
 }

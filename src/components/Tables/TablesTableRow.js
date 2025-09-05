@@ -94,7 +94,7 @@ function TablesTableRow(props) {
           variant="no-effects"
           mb={{ sm: "10px", md: "0px" }}
           me={{ md: "12px" }}
-          onClick={onDelete} // click handler
+          onClick={onDelete} 
         >
           <Flex color="red.500" cursor="pointer" align="center" p="12px">
             <Icon as={FaTrashAlt} me="4px" />
@@ -109,7 +109,7 @@ function TablesTableRow(props) {
           variant="no-effects"
           onClick={onEdit} // click handler
         >
-          <Flex color={textColor} cursor="pointer" align="center" p="12px">
+          <Flex   color="blue.500" cursor="pointer" align="center" p="12px">
             <Icon as={FaPencilAlt} me="4px" />
             <Text fontSize="sm" fontWeight="semibold">
               EDIT
