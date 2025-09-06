@@ -16,24 +16,23 @@ import {
   Input,
   useColorModeValue,
   useColorMode,
-  SimpleGrid,Image,
+  SimpleGrid,
+  Image,
   IconButton,
-  Box, 
+  Box,
 } from "@chakra-ui/react";
 import { apiPostSecure, apiUrl } from "utils/api";
 import { showError, showSucess } from "utils/toast";
 import RoleSelect from "components/Select/RoleSelect";
 import { apiCallPostFormData } from "utils/api";
 import { CloseIcon } from "@chakra-ui/icons";
-
 import { FaUser } from "react-icons/fa";
 import { MdDateRange } from "react-icons/md";
 
-
 const AddBlog = ({ isOpen, onClose, onUserAdded }) => {
+  const { colorMode } = useColorMode();
   const textColor = useColorModeValue("gray.700", "white");
   const bgForm = useColorModeValue("white", "navy.800");
-  const { colorMode } = useColorMode();
 
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
@@ -47,26 +46,22 @@ const AddBlog = ({ isOpen, onClose, onUserAdded }) => {
       setAuthor("");
       setContent("");
       setCoverImg(null);
-            setPreview(null);
-
+      setPreview(null);
     }
   }, [isOpen]);
-
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setCoverImg(file);
-      setPreview(URL.createObjectURL(file)); // preview URL
+      setPreview(URL.createObjectURL(file));
     }
   };
 
-  // remove image
   const removeImage = () => {
     setCoverImg(null);
     setPreview(null);
   };
-
 
   const handleAddBlog = () => {
     console.log({ title, author, content, coverImg });
@@ -139,48 +134,42 @@ const AddBlog = ({ isOpen, onClose, onUserAdded }) => {
               />
             </FormControl>
 
-            {/* <FormControl>
+            <FormControl>
               <FormLabel fontSize="sm" fontWeight="normal">
                 Cover Image
               </FormLabel>
-              <Input
-                type="file"
-                accept="image/*"
-                onChange={(e) => setCoverImg(e.target.files[0])}
-              />
-            </FormControl> */}
-   <FormControl>
-  <FormLabel fontSize="sm" fontWeight="normal">
-    Cover Image
-  </FormLabel>
 
-  {!coverImg ? (
-    <Input
-      type="file"
-      accept="image/*"
-      onChange={(e) => setCoverImg(e.target.files[0])}
-    />
-  ) : (
-    <Flex direction="column" gap={2}>
-      {/* Preview Image */}
-      <Flex align="center" gap={3}>
-        <img
-          src={URL.createObjectURL(coverImg)}
-          alt="preview"
-          style={{ width: "120px", height: "80px", objectFit: "cover", borderRadius: "8px" }}
-        />
-        <Button
-          size="sm"
-          colorScheme="red"
-          variant="outline"
-          onClick={() => setCoverImg(null)}
-        >
-          Remove
-        </Button>
-      </Flex>
-    </Flex>
-  )}
-</FormControl>
+              {!coverImg ? (
+                <Input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setCoverImg(e.target.files[0])}
+                />
+              ) : (
+                <Flex direction="column" gap={2}>
+                  <Flex align="center" gap={3}>
+                    <img
+                      src={URL.createObjectURL(coverImg)}
+                      alt="preview"
+                      style={{
+                        width: "120px",
+                        height: "80px",
+                        objectFit: "cover",
+                        borderRadius: "8px",
+                      }}
+                    />
+                    <Button
+                      size="sm"
+                      colorScheme="red"
+                      variant="outline"
+                      onClick={() => setCoverImg(null)}
+                    >
+                      Remove
+                    </Button>
+                  </Flex>
+                </Flex>
+              )}
+            </FormControl>
 
             <Flex mt={4} w="100%" justify="flex-end" gap={2}>
               <Button onClick={onClose}>Cancel</Button>

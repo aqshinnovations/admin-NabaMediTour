@@ -1,4 +1,3 @@
-// src/views/Blogs/EditBlog.js
 import React, { useState, useEffect } from "react";
 import {
   Modal,
@@ -30,13 +29,12 @@ const EditBlog = ({ isOpen, onClose, blog, onBlogUpdated }) => {
   const [content, setContent] = useState("");
   const [coverImg, setCoverImg] = useState(null);
 
-  // pre-fill fields when modal opens
   useEffect(() => {
     if (blog && isOpen) {
       setTitle(blog.title || "");
       setAuthor(blog.author || "");
       setContent(blog.content || "");
-      setCoverImg(null); // don’t pre-load file input
+      setCoverImg(null);
     }
   }, [blog, isOpen]);
 
@@ -54,9 +52,9 @@ const EditBlog = ({ isOpen, onClose, blog, onBlogUpdated }) => {
     if (coverImg) {
       formData.append("cover_image", coverImg);
     }
-console.log("formData",formData)
+    console.log("formData", formData);
     apiCallPutWithForm(
-      apiUrl.Blogs, // ✅ update endpoint
+      apiUrl.Blogs,
       formData,
       (res) => {
         showSucess("Blog updated successfully! 🎉");
@@ -68,8 +66,7 @@ console.log("formData",formData)
       (error) => {
         showError(error || "Something went wrong. Please try again!");
         console.log("Update error", error);
-      },
-      "PUT" // ✅ use PUT/PATCH for update
+      }
     );
   };
 
@@ -109,71 +106,70 @@ console.log("formData",formData)
               />
             </FormControl>
 
-           <FormControl>
-  <FormLabel>Cover Image (optional)</FormLabel>
+            <FormControl>
+              <FormLabel>Cover Image (optional)</FormLabel>
 
-  {!coverImg ? (
-    blog?.cover_image ? (
-      <Flex direction="column" gap={2}>
-        <Flex align="center" gap={3}>
-          <img
-            src={blog.cover_image} // existing image from API
-            alt="current cover"
-            style={{
-              width: "120px",
-              height: "80px",
-              objectFit: "cover",
-              borderRadius: "8px",
-            }}
-          />
-          <Button
-            size="sm"
-            colorScheme="red"
-            variant="outline"
-            onClick={() => setCoverImg(null)} // remove existing image
-          >
-            Remove
-          </Button>
-        </Flex>
-        <Input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setCoverImg(e.target.files[0])}
-        />
-      </Flex>
-    ) : (
-      <Input
-        type="file"
-        accept="image/*"
-        onChange={(e) => setCoverImg(e.target.files[0])}
-      />
-    )
-  ) : (
-    <Flex direction="column" gap={2}>
-      <Flex align="center" gap={3}>
-        <img
-          src={URL.createObjectURL(coverImg)}
-          alt="preview"
-          style={{
-            width: "120px",
-            height: "80px",
-            objectFit: "cover",
-            borderRadius: "8px",
-          }}
-        />
-        <Button
-          size="sm"
-          colorScheme="red"
-          variant="outline"
-          onClick={() => setCoverImg(null)}
-        >
-          Remove
-        </Button>
-      </Flex>
-    </Flex>
-  )}
-</FormControl>
-
+              {!coverImg ? (
+                blog?.cover_image ? (
+                  <Flex direction="column" gap={2}>
+                    <Flex align="center" gap={3}>
+                      <img
+                        src={blog.cover_image}
+                        alt="current cover"
+                        style={{
+                          width: "120px",
+                          height: "80px",
+                          objectFit: "cover",
+                          borderRadius: "8px",
+                        }}
+                      />
+                      <Button
+                        size="sm"
+                        colorScheme="red"
+                        variant="outline"
+                        onClick={() => setCoverImg(null)}
+                      >
+                        Remove
+                      </Button>
+                    </Flex>
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => setCoverImg(e.target.files[0])}
+                    />
+                  </Flex>
+                ) : (
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setCoverImg(e.target.files[0])}
+                  />
+                )
+              ) : (
+                <Flex direction="column" gap={2}>
+                  <Flex align="center" gap={3}>
+                    <img
+                      src={URL.createObjectURL(coverImg)}
+                      alt="preview"
+                      style={{
+                        width: "120px",
+                        height: "80px",
+                        objectFit: "cover",
+                        borderRadius: "8px",
+                      }}
+                    />
+                    <Button
+                      size="sm"
+                      colorScheme="red"
+                      variant="outline"
+                      onClick={() => setCoverImg(null)}
+                    >
+                      Remove
+                    </Button>
+                  </Flex>
+                </Flex>
+              )}
+            </FormControl>
 
             <Flex mt={4} justify="flex-end" gap={2}>
               <Button onClick={onClose}>Cancel</Button>

@@ -13,6 +13,8 @@ const apiUrl = {
 
   Profile: `${baseUrl}account/profile/`,
   Blogs: `${baseUrl}blogs/blog-data/`,
+  BlogContent: `${baseUrl}blogs/blogContent/`,
+
 
 
 };
@@ -24,7 +26,7 @@ export const createDownloadUrl = (url) => {
 };
 
 export function apiCallUnsecureGet(api, response, error) {
-  console.log("apiCallSecureGet ", api);
+  console.log("apiCallUnsecureGet ", api);
   axios
     .get(api)
     .then((res) => {

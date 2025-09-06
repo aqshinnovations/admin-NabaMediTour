@@ -41,18 +41,11 @@ import TablesTableRow from "components/Tables/TablesTableRow";
 import { tablesProjectData, tablesTableData } from "variables/general";
 import { apiCallSecureGet, apiCallSecureDelete, apiUrl } from "utils/api";
 import { showSucess, showError } from "utils/toast";
-import avatar2 from "assets/img/ImageArchitect1.png";
-import avatar3 from "assets/img/avatars/avatar3.png";
-import avatar4 from "assets/img/avatars/avatar4.png";
-import avatar5 from "assets/img/avatars/avatar5.png";
-import avatar6 from "assets/img/avatars/avatar6.png";
-import ImageArchitect1 from "assets/img/ImageArchitect1.png";
-import ImageArchitect2 from "assets/img/ImageArchitect2.png";
-import ImageArchitect3 from "assets/img/ImageArchitect3.png";
+import { Link } from "react-router-dom";
+
 import { FaPencilAlt, FaTrashAlt, FaFilePdf } from "react-icons/fa";
 import { FaUser } from "react-icons/fa";
 import { MdDateRange } from "react-icons/md";
-import EditBlog from "./EditBlog";
 
 import AddBlog from "./AddBlog";
 function Blogs() {
@@ -65,12 +58,6 @@ function Blogs() {
     onOpen: openAddBlog,
     onClose: closeAddBlog,
   } = useDisclosure(); // ✅ renamed properly
-  const {
-    isOpen: isEditBlogOpen,
-    onOpen: openEditBlog,
-    onClose: closeEditBlog,
-  } = useDisclosure();
-  const [editBlog, setEditBlog] = useState(null);
 
   const [blogData, setBlogData] = useState([]);
   const [selectedBlog, setSelectedBlog] = useState(null);
@@ -122,11 +109,6 @@ function Blogs() {
     }
   };
 
-  //   const handleEditClick = (user) => {
-  //   setEditUser(user);
-  //   setIsEditUserOpen(true);
-  // };
-
   return (
     <>
       <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
@@ -146,133 +128,136 @@ function Blogs() {
           </CardHeader>
 
           <CardBody px="5px" p="10px" bg="white">
-            <Grid
-              m={2}
-              templateColumns={{
-                sm: "1fr",
-                md: "1fr 1fr",
-                xl: "repeat(3, 1fr)",
-              }}
-              templateRows={{
-                sm: "1fr 1fr 1fr auto",
-                md: "1fr 1fr",
-                xl: "1fr",
-              }}
-              gap="24px"
-            >
-              {blogData.map((blog) => (
-                <Flex
-                  key={blog.id}
-                  direction="column"
-                  p="10px"
-                  boxShadow="lg"
-                  borderRadius="15px"
-                  bg="white"
-                >
-                  <Box mb="20px" position="relative" borderRadius="15px">
-                    <Image
-                      src={blog.cover_image}
+            {blogData.length === 0 ? (
+              <Flex align="center" justify="center" w="100%" h="200px">
+                <Text fontSize="lg" fontWeight="semibold" color="gray.500">
+                  No data found
+                </Text>
+              </Flex>
+            ) : (
+              <Grid
+                m={2}
+                templateColumns={{
+                  sm: "1fr",
+                  md: "1fr 1fr",
+                  xl: "repeat(3, 1fr)",
+                }}
+                templateRows={{
+                  sm: "1fr 1fr 1fr auto",
+                  md: "1fr 1fr",
+                  xl: "1fr",
+                }}
+                gap="24px"
+              >
+                {blogData.map((blog) => (
+                  <Link
+                    to={`/admin/blog/${blog.id}`}
+                    style={{ textDecoration: "none" }}
+                  >
+                    <Flex
+                      key={blog.id}
+                      direction="column"
+                      p="10px"
+                      boxShadow="lg"
                       borderRadius="15px"
-                      alt={blog.title}
-                      w="100%"
-                      h="200px"
-                      objectFit="cover"
-                    />
-                    <Box
-                      w="100%"
-                      h="100%"
-                      position="absolute"
-                      top="0"
-                      borderRadius="15px"
-                      bg="linear-gradient(360deg, rgba(49, 56, 96, 0.16) 0%, rgba(21, 25, 40, 0.88) 100%)"
-                    ></Box>
-                  </Box>
-
-                  <Flex direction="column">
-                    <Text
-                      fontSize="xl"
-                      color={textColor}
-                      fontWeight="bold"
-                      mb="10px"
-                      noOfLines={1}
+                      bg="white"
                     >
-                      {blog.title}
-                    </Text>
-                    <Flex align="center" justify="space-between" w="100%">
-                      <Flex align="center" gap={2}>
-                        <FaUser size={14} color={iconColor} />
-                        <Text fontSize="sm" color="gray.400" fontWeight="600">
-                          {blog.author}
-                        </Text>
-                      </Flex>
+                      <Box mb="20px" position="relative" borderRadius="15px">
+                        <Image
+                          src={blog.cover_image}
+                          borderRadius="15px"
+                          alt={blog.title}
+                          w="100%"
+                          h="200px"
+                          objectFit="cover"
+                        />
+                        <Box
+                          w="100%"
+                          h="100%"
+                          position="absolute"
+                          top="0"
+                          borderRadius="15px"
+                          bg="linear-gradient(360deg, rgba(49, 56, 96, 0.16) 0%, rgba(21, 25, 40, 0.88) 100%)"
+                        ></Box>
+                      </Box>
 
-                      <Flex align="center" gap={2}>
-                        <MdDateRange size={16} color={iconColor} />
-                        <Text fontSize="md" color="gray.400" fontWeight="400">
-                          {
-                            new Date(blog.created_at)
-                              .toISOString()
-                              .split("T")[0]
-                          }
+                      <Flex direction="column">
+                        <Text
+                          fontSize="xl"
+                          color={textColor}
+                          fontWeight="bold"
+                          mb="10px"
+                          noOfLines={1}
+                        >
+                          {blog.title}
                         </Text>
+                        <Flex align="center" justify="space-between" w="100%">
+                          <Flex align="center" gap={2}>
+                            <FaUser size={14} color={iconColor} />
+                            <Text
+                              fontSize="sm"
+                              color="gray.400"
+                              fontWeight="600"
+                            >
+                              {blog.author}
+                            </Text>
+                          </Flex>
+
+                          <Flex align="center" gap={2}>
+                            <MdDateRange size={16} color={iconColor} />
+                            <Text
+                              fontSize="md"
+                              color="gray.400"
+                              fontWeight="400"
+                            >
+                              {
+                                new Date(blog.created_at)
+                                  .toISOString()
+                                  .split("T")[0]
+                              }
+                            </Text>
+                          </Flex>
+                        </Flex>
+
+                        <Text
+                          fontSize="md"
+                          color={textColor}
+                          fontWeight="400"
+                          mb="20px"
+                          noOfLines={2}
+                        >
+                          {blog.content}
+                        </Text>
+                        <Flex justifyContent="space-between">
+                          <Button
+                            p="0px"
+                            bg="transparent"
+                            variant="no-effects"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleDeleteClick(blog);
+                            }}
+                          >
+                            <Flex
+                              color="red.500"
+                              cursor="pointer"
+                              align="center"
+                              p="12px"
+                            >
+                              <Icon as={FaTrashAlt} me="4px" />
+                              <Text fontSize="sm" fontWeight="semibold">
+                                DELETE
+                              </Text>
+                            </Flex>
+                          </Button>
+                        </Flex>
                       </Flex>
                     </Flex>
-
-                    <Text
-                      fontSize="md"
-                      color={textColor}
-                      fontWeight="400"
-                      mb="20px"
-                      noOfLines={2}
-                    >
-                      {blog.content}
-                    </Text>
-                    <Flex justifyContent="space-between">
-                      <Button
-                        p="0px"
-                        bg="transparent"
-                        variant="no-effects"
-                        onClick={() => {
-                          setEditBlog(blog);
-                          openEditBlog();
-                        }}
-                      >
-                        <Flex
-                          color="blue.500"
-                          cursor="pointer"
-                          align="center"
-                          p="12px"
-                        >
-                          <Icon as={FaPencilAlt} me="4px" />
-                          <Text fontSize="sm" fontWeight="semibold">
-                            EDIT
-                          </Text>
-                        </Flex>
-                      </Button>
-
-                      <Button
-                        p="0px"
-                        bg="transparent"
-                        variant="no-effects"
-                        onClick={() => handleDeleteClick(blog)}
-                      >
-                        <Flex
-                          color="red.500"
-                          cursor="pointer"
-                          align="center"
-                          p="12px"
-                        >
-                          <Icon as={FaTrashAlt} me="4px" />
-                          <Text fontSize="sm" fontWeight="semibold">
-                            DELETE
-                          </Text>
-                        </Flex>
-                      </Button>
-                    </Flex>
-                  </Flex>
-                </Flex>
-              ))}
-            </Grid>
+                  </Link>
+                ))}
+              </Grid>
+            )}
           </CardBody>
         </Card>
       </Flex>
@@ -311,13 +296,6 @@ function Blogs() {
         isOpen={isAddBlogOpen}
         onClose={closeAddBlog}
         onUserAdded={BlogsData}
-      />
-
-      <EditBlog
-        isOpen={isEditBlogOpen}
-        onClose={closeEditBlog}
-        blog={editBlog}
-        onBlogUpdated={BlogsData}
       />
     </>
   );

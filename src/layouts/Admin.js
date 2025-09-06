@@ -27,7 +27,9 @@ import MainPanel from "../components/Layout/MainPanel";
 import PanelContainer from "../components/Layout/PanelContainer";
 import PanelContent from "../components/Layout/PanelContent";
 import bgAdmin from "assets/img/admin-background.png";
-import IndocsLogo from "assets/logo.png"
+import IndocsLogo from "assets/logo.png";
+import BlogDetails from "views/Blogs/BlogDetails";
+
 export default function Dashboard(props) {
   const { ...rest } = props;
   // states and functions
@@ -108,26 +110,26 @@ export default function Dashboard(props) {
   return (
     <Box>
       <Box
-        minH='40vh'
-        w='100%'
-        position='absolute'
+        minH="40vh"
+        w="100%"
+        position="absolute"
         bgImage={colorMode === "light" ? bgAdmin : "none"}
         bg={colorMode === "light" ? bgAdmin : "navy.900"}
-        bgSize='cover'
-        top='0'
+        bgSize="cover"
+        top="0"
       />
       <Sidebar
         routes={routes}
-      logo={
-    <Box display="flex" alignItems="center" justifyContent="center">
-      <img
-        src={IndocsLogo}
-        alt="Indocs"
-        style={{ height: "100px", width: "auto" }} // 👈 only control height
-      />
-    </Box>
-  }
-  {...rest}
+        logo={
+          <Box display="flex" alignItems="center" justifyContent="center">
+            <img
+              src={IndocsLogo}
+              alt="Indocs"
+              style={{ height: "100px", width: "auto" }} // 👈 only control height
+            />
+          </Box>
+        }
+        {...rest}
         // {
         //   <Stack direction='row' spacing='12px' align='center' justify='center'>
         //     {colorMode === "dark" ? (
@@ -148,13 +150,13 @@ export default function Dashboard(props) {
         //   </Stack>
         // }
         // display='none'
-      
       />
       <MainPanel
         w={{
           base: "100%",
           xl: "calc(100% - 275px)",
-        }}>
+        }}
+      >
         <Portal>
           <AdminNavbar
             onOpen={onOpen}
@@ -168,8 +170,10 @@ export default function Dashboard(props) {
           <PanelContent>
             <PanelContainer>
               <Switch>
+                <Route path="/admin/blog/:id" component={BlogDetails} />
+
                 {getRoutes(routes)}
-                <Redirect from='/admin' to='/admin/dashboard' />
+                <Redirect from="/admin" to="/admin/dashboard" />
               </Switch>
             </PanelContainer>
           </PanelContent>
