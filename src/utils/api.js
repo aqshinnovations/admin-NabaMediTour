@@ -12,6 +12,8 @@ const apiUrl = {
   updateUsers: `${baseUrl}account/update-member/`,
 
   Profile: `${baseUrl}account/profile/`,
+  Blogs: `${baseUrl}blogs/blog-data/`,
+
 
 };
 
@@ -188,7 +190,7 @@ export function apiCallPostFormData(api, formData, response, error) {
     .post(api, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
-        // 'Authorization': `Token ${getAccessToken()}`
+        'Authorization': `Token ${getAccessToken()}`
       },
     })
     .then((res) => {

@@ -2,6 +2,7 @@ import Dashboard from "views/Dashboard/Dashboard.js";
 import Profile from "views/Profile/Profile";
 import Patients from "views/Patients/Patients.js";
 import Users from "views/users/Users";
+import Blogs from "views/Blogs/blogs";
 import {
   HomeIcon,
   StatsIcon,
@@ -28,6 +29,14 @@ const dashRoutes = [
     name: "Patients",
     icon: <StatsIcon color='inherit' />,
     component: Patients,
+    layout: "/admin",
+  },
+   {
+    path: "/blogs",
+    name: "blogs",
+    icon: <PersonIcon color='inherit' />,
+    secondaryNavbar: true,
+    component: Blogs,
     layout: "/admin",
   },
   {
