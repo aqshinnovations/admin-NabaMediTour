@@ -11,13 +11,13 @@ import {
   DocumentIcon,   // for Blogs
 } from "components/Icons/Icons";
 const dashRoutes = [
-  {
-    path: "/dashboard",
-    name: "Dashboard",
-    icon: <HomeIcon color="inherit" />,
-    component: Dashboard,
-    layout: "/admin",
-  },
+  // {
+  //   path: "/dashboard",
+  //   name: "Dashboard",
+  //   icon: <HomeIcon color="inherit" />,
+  //   component: Dashboard,
+  //   layout: "/admin",
+  // },
   {
     path: "/users",
     name: "Users",
