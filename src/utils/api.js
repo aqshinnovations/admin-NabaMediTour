@@ -1,7 +1,9 @@
 import axios from "axios";
 import { isAuthenticated, getAccessToken } from "./session";
 
-const baseUrl = "http://localhost:8000/";
+// const baseUrl = "http://localhost:8000/";
+const baseUrl = " https://www.indocscare.com:8000/";
+
 
 const apiUrl = {
   baseUrl: `${baseUrl}`,
