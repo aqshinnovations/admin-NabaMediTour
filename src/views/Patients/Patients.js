@@ -55,6 +55,7 @@ function Patients() {
   };
 
   const handleDeleteClick = (patient) => {
+    console.log("doc url", patient)
     setSelectedPatient(patient);
     setDialogOpen(true);
   };
@@ -114,6 +115,7 @@ function Patients() {
                 {patients.length > 0 ? (
                   patients.map((row, index, arr) => (
                     <PatientsTable
+                    patient={row}
                       key={row.id || index}
                       id={row.id}
                       name={row.name || "Name not available"}
@@ -121,19 +123,24 @@ function Patients() {
                       email={row.email || "Email not provided"}
                       subdomain={row.mobile || "Mobile number not available"}
                       status={row.status || "Status not available"}
-                      date={
-                        row.updated
-                          ? new Date(row.updated).toISOString().split("T")[0]
-                          : "No Data"
-                      }
+                     date={
+  row.updated
+    ? new Date(row.updated)
+        .toISOString()
+        .replace("T", " ")
+        .slice(0, 16)
+    : "No Data"
+}
                       AboutHealth={
                         row.aboutHealth || "No health details provided"
                       }
                       report={row.report || null}
                       isLast={index === arr.length - 1}
-                      onDeleteClick={() =>
-                        handleDeleteClick({ id: row.id, name: row.name })
-                      }
+                      // onDeleteClick={() =>
+                      //   handleDeleteClick({ id: row.id, name: row.name })
+                      // }
+                        onDeleteClick={() => handleDeleteClick({ id: row.id, name: row.name })}
+
                     />
                   ))
                 ) : (

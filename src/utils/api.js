@@ -8,6 +8,8 @@ const baseUrl = " https://www.indocscare.com:8000/";
 const apiUrl = {
   baseUrl: `${baseUrl}`,
   patients: `${baseUrl}patients`,
+  patientsReport: `${baseUrl}patients/patients-report/`,
+
   signIn: `${baseUrl}account/sign-in/`,
   contactUs: `${baseUrl}patients/patients-data/`,
   Users: `${baseUrl}account/members/`,
@@ -355,6 +357,74 @@ export function apiPutSecure(api, data, response, error) {
         error(`Error ${err.message}`);
       }
       console.log(err.config);
+    });
+}
+
+export function apiDownloadFileSecure(api, response, error) {
+  console.log("apiDownloadFileSecure ", api);
+  axios
+    .get(api, {
+      headers: {
+        Authorization: `Token ${getAccessToken()}`,
+      },
+      responseType: "arraybuffer",
+    })
+    .then((res) => {
+      console.warn("result", res.data);
+      if (res.status === 200) {
+        const blob = new Blob([res.data], { type: res.headers["content-type"] });
+        const url = window.URL.createObjectURL(blob);
+
+        const contentDisposition = res.headers["content-disposition"];
+        const fileNameMatch = contentDisposition?.match(/filename[^;=\n]*=["']?([^;\n"']+)/);
+        const fileName = fileNameMatch ? fileNameMatch[1] : "downloaded";
+        const extension = res.headers["content-type"].split("/")[1];
+        const finalFileName = `${fileName}.${extension}`;
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = finalFileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+
+        response("File downloaded successfully");
+      } else {
+        const errorMsg = res.data?.msg || `Unexpected status code: ${res.status}`;
+        error(errorMsg);
+      }
+    })
+
+    .catch((err) => {
+      if (err.response) {
+        console.error("Full error response:", err.response);
+
+        if (err.response.data instanceof ArrayBuffer) {
+          const decoder = new TextDecoder("utf-8");
+          const jsonString = decoder.decode(err.response.data);
+
+          try {
+            const jsonResponse = JSON.parse(jsonString);
+            const errorMsg = jsonResponse.msg || "An error occurred";
+            console.error("API error response:", errorMsg);
+            error(errorMsg);
+          } catch (parseError) {
+            console.error("Error parsing JSON response:", parseError);
+            error("An error occurred while parsing the error response.");
+          }
+        } else {
+          const errorMsg = err.response.data?.msg || "An error occurred";
+          console.error("API error response:", errorMsg);
+          error(errorMsg);
+        }
+      } else if (err.request) {
+        console.log("Request error:", err.request);
+        error("No response received from the server");
+      } else {
+        console.log("Error:", err.message);
+        error(`Error: ${err.message}`);
+      }
     });
 }
 

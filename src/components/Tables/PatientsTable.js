@@ -11,6 +11,8 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { FaPencilAlt, FaTrashAlt, FaFilePdf, FaDownload } from "react-icons/fa";
+import { apiDownloadFileSecure, apiUrl } from "utils/api";
+import { showSucess, showError } from "utils/toast";
 
 function PatientsTable(props) {
   const {
@@ -26,18 +28,30 @@ function PatientsTable(props) {
     AboutHealth,
     report,
     onDeleteClick,
+    patient,
   } = props;
   const textColor = useColorModeValue("gray.500", "white");
   const titleColor = useColorModeValue("gray.700", "white");
   const bgStatus = useColorModeValue("gray.400", "navy.900");
   const borderColor = useColorModeValue("gray.200", "gray.600");
-
   const handleDownload = () => {
-    if (report) {
-      window.open(report, "_blank");
-    } else {
-      alert("No report available");
+    console.log("Selected patient data:", patient);
+
+    if (!report) {
+      showError("No report available");
+      return;
     }
+
+    const url = `${apiUrl.patientsReport}?id=${patient.id}`;
+    apiDownloadFileSecure(
+      url,
+      (successMessage) => {
+        showSucess("Report downloaded successfully!");
+      },
+      (errorMessage) => {
+        showError("Failed to download report!");
+      }
+    );
   };
 
   return (
@@ -86,28 +100,29 @@ function PatientsTable(props) {
         </Text>
       </Td>
 
-   {/* 4. Report Button */}
-<Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-  {report ? (
-    <Button
-      p="0px"
-      bg="transparent"
-      variant="no-effects"
-      color="blue.500"
-      onClick={handleDownload}
-    >
-      <Flex alignItems="center" p="12px">
-        <Icon as={FaDownload} me="4px" />
-        <Text fontSize="md" fontWeight="bold">Download Report</Text>
-      </Flex>
-    </Button>
-  ) : (
-    <Text fontSize="sm" color="gray.400">
-      No data
-    </Text>
-  )}
-</Td>
-
+      {/* 4. Report Button */}
+      <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+        {report ? (
+          <Button
+            p="0px"
+            bg="transparent"
+            variant="no-effects"
+            color="blue.500"
+            onClick={handleDownload}
+          >
+            <Flex alignItems="center" p="12px">
+              <Icon as={FaDownload} me="4px" />
+              <Text fontSize="md" fontWeight="bold">
+                Download Report
+              </Text>
+            </Flex>
+          </Button>
+        ) : (
+          <Text fontSize="sm" color="gray.400">
+            No data
+          </Text>
+        )}
+      </Td>
 
       {/* 5. Date */}
       <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
@@ -118,14 +133,16 @@ function PatientsTable(props) {
 
       {/* 6. Actions (Delete & Edit) */}
       <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-         <Button
+        <Button
           p="0px"
           bg="transparent"
-  onClick={() => onDeleteClick({ id, name })} // ✅ pass object
+          onClick={() => onDeleteClick({ id, name })} // ✅ pass object
         >
           <Flex color="red.500" align="center" p="12px">
             <Icon as={FaTrashAlt} me="4px" />
-            <Text fontSize="sm" fontWeight="semibold">DELETE</Text>
+            <Text fontSize="sm" fontWeight="semibold">
+              DELETE
+            </Text>
           </Flex>
         </Button>
 
