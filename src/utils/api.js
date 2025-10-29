@@ -4,23 +4,21 @@ import { isAuthenticated, getAccessToken } from "./session";
 // const baseUrl = "http://localhost:8000/";
 const baseUrl = " https://www.indocscare.com:8000/";
 
+// const imageBaseUrl = "http://localhost:8000";
+const imageBaseUrl = " https://www.indocscare.com:8000";
 
 const apiUrl = {
   baseUrl: `${baseUrl}`,
+  imageBaseUrl: `${imageBaseUrl}`,
   patients: `${baseUrl}patients`,
   patientsReport: `${baseUrl}patients/patients-report/`,
-
   signIn: `${baseUrl}account/sign-in/`,
   contactUs: `${baseUrl}patients/patients-data/`,
   Users: `${baseUrl}account/members/`,
   updateUsers: `${baseUrl}account/update-member/`,
-
   Profile: `${baseUrl}account/profile/`,
   Blogs: `${baseUrl}blogs/blog-data/`,
   BlogContent: `${baseUrl}blogs/blogContent/`,
-
-
-
 };
 
 export { baseUrl, apiUrl };
@@ -196,7 +194,7 @@ export function apiCallPostFormData(api, formData, response, error) {
     .post(api, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
-        'Authorization': `Token ${getAccessToken()}`
+        Authorization: `Token ${getAccessToken()}`,
       },
     })
     .then((res) => {
@@ -372,11 +370,15 @@ export function apiDownloadFileSecure(api, response, error) {
     .then((res) => {
       console.warn("result", res.data);
       if (res.status === 200) {
-        const blob = new Blob([res.data], { type: res.headers["content-type"] });
+        const blob = new Blob([res.data], {
+          type: res.headers["content-type"],
+        });
         const url = window.URL.createObjectURL(blob);
 
         const contentDisposition = res.headers["content-disposition"];
-        const fileNameMatch = contentDisposition?.match(/filename[^;=\n]*=["']?([^;\n"']+)/);
+        const fileNameMatch = contentDisposition?.match(
+          /filename[^;=\n]*=["']?([^;\n"']+)/
+        );
         const fileName = fileNameMatch ? fileNameMatch[1] : "downloaded";
         const extension = res.headers["content-type"].split("/")[1];
         const finalFileName = `${fileName}.${extension}`;
@@ -391,7 +393,8 @@ export function apiDownloadFileSecure(api, response, error) {
 
         response("File downloaded successfully");
       } else {
-        const errorMsg = res.data?.msg || `Unexpected status code: ${res.status}`;
+        const errorMsg =
+          res.data?.msg || `Unexpected status code: ${res.status}`;
         error(errorMsg);
       }
     })

@@ -98,7 +98,8 @@ function BlogDetails() {
 
           <CardBody px="5px" p="10px" bg="white">
             <Image
-              src={blog.cover_image}
+              src={`${apiUrl.imageBaseUrl}${blog.cover_image}`}
+              // src={blog.cover_image}
               alt={blog.title}
               borderRadius="15px"
               w="100%"

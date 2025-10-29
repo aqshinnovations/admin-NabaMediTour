@@ -164,7 +164,7 @@ function Blogs() {
                     >
                       <Box mb="20px" position="relative" borderRadius="15px">
                         <Image
-                          src={blog.cover_image}
+                          src={`${apiUrl.imageBaseUrl}${blog.cover_image}`}
                           borderRadius="15px"
                           alt={blog.title}
                           w="100%"
