@@ -27,7 +27,7 @@ import MainPanel from "../components/Layout/MainPanel";
 import PanelContainer from "../components/Layout/PanelContainer";
 import PanelContent from "../components/Layout/PanelContent";
 import bgAdmin from "assets/img/admin-background.png";
-import IndocsLogo from "assets/logo.png";
+import NabaMediTour from "assets/logo.jpeg";
 import BlogDetails from "views/Blogs/BlogDetails";
 
 export default function Dashboard(props) {
@@ -123,7 +123,7 @@ export default function Dashboard(props) {
         logo={
           <Box display="flex" alignItems="center" justifyContent="center">
             <img
-              src={IndocsLogo}
+              src={NabaMediTour}
               alt="Indocs"
               style={{ height: "100px", width: "auto" }} // 👈 only control height
             />

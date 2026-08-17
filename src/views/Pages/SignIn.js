@@ -22,7 +22,7 @@ import { useHistory } from "react-router-dom";
 import { showError, showSucess } from "utils/toast";
 import { saveUser } from "utils/session";
 import { apiUrl } from "utils/api";
-
+import NabaMediTour from "../../assets/logo.jpeg";
 function SignIn() {
   const textColor = useColorModeValue("gray.700", "white");
   const bgForm = useColorModeValue("white", "navy.800");
@@ -56,7 +56,7 @@ function SignIn() {
       },
       (errMsg) => {
         showError(errMsg || "Login failed ");
-      }
+      },
     );
   };
 
@@ -92,9 +92,21 @@ function SignIn() {
             bg={bgForm}
             boxShadow={useColorModeValue(
               "0px 5px 14px rgba(61, 36, 36, 0.05)",
-              "unset"
+              "unset",
             )}
           >
+            <Flex justifyContent="center" alignItems="center" mb="20px">
+              <img
+                src={NabaMediTour}
+                alt="NabaMediTour"
+                style={{
+                  height: "100px",
+                  width: "100px",
+                  objectFit: "contain",
+                }}
+              />
+            </Flex>
+
             <Text
               fontSize="xl"
               color={textColor}

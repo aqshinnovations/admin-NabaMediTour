@@ -71,14 +71,14 @@ function Blogs() {
 
   const BlogsData = () => {
     apiCallSecureGet(
-      apiUrl.Blogs,
+      apiUrl.listBlogs,
       (response) => {
         console.log("Blogs", response.list);
         setBlogData(response.list);
       },
       (error) => {
         console.log("error", error);
-      }
+      },
     );
   };
 
@@ -104,7 +104,7 @@ function Blogs() {
           console.log("Delete error", error);
           showError(error || "something went wrong please try again");
           setIsOpen(false);
-        }
+        },
       );
     }
   };
@@ -158,13 +158,13 @@ function Blogs() {
                       key={blog.id}
                       direction="column"
                       p="10px"
-                      boxShadow="lg"
+                      boxShadow="sm"
                       borderRadius="15px"
                       bg="white"
                     >
                       <Box mb="20px" position="relative" borderRadius="15px">
                         <Image
-                          src={`${apiUrl.imageBaseUrl}${blog.cover_image}`}
+                          src={blog.cover_image}
                           borderRadius="15px"
                           alt={blog.title}
                           w="100%"

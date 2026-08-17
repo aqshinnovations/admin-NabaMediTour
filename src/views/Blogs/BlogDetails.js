@@ -52,7 +52,7 @@ function BlogDetails() {
       (error) => {
         console.error("Error fetching blog", error);
         setLoading(false);
-      }
+      },
     );
   };
 
@@ -98,7 +98,7 @@ function BlogDetails() {
 
           <CardBody px="5px" p="10px" bg="white">
             <Image
-              src={`${apiUrl.imageBaseUrl}${blog.cover_image}`}
+              src={blog.cover_image}
               // src={blog.cover_image}
               alt={blog.title}
               borderRadius="15px"

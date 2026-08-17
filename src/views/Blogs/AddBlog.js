@@ -14,6 +14,7 @@ import {
   FormLabel,
   HStack,
   Input,
+  Select,
   useColorModeValue,
   useColorMode,
   SimpleGrid,
@@ -39,7 +40,7 @@ const AddBlog = ({ isOpen, onClose, onUserAdded }) => {
   const [content, setContent] = useState("");
   const [coverImg, setCoverImg] = useState(null);
   const [preview, setPreview] = useState(null);
-
+  const [language, setLanguage] = useState("en");
   useEffect(() => {
     if (!isOpen) {
       setTitle("");
@@ -47,6 +48,7 @@ const AddBlog = ({ isOpen, onClose, onUserAdded }) => {
       setContent("");
       setCoverImg(null);
       setPreview(null);
+      setLanguage("en");
     }
   }, [isOpen]);
 
@@ -74,7 +76,7 @@ const AddBlog = ({ isOpen, onClose, onUserAdded }) => {
     formData.append("author", author);
     formData.append("content", content);
     formData.append("cover_image", coverImg);
-
+    formData.append("language", language);
     apiCallPostFormData(
       apiUrl.Blogs,
       formData,
@@ -88,7 +90,7 @@ const AddBlog = ({ isOpen, onClose, onUserAdded }) => {
       (error) => {
         showError(error || "Something went wrong.Please try again!");
         console.log("error", error);
-      }
+      },
     );
   };
 
@@ -122,6 +124,19 @@ const AddBlog = ({ isOpen, onClose, onUserAdded }) => {
               />
             </FormControl>
 
+            <FormControl>
+              <FormLabel fontSize="sm" fontWeight="normal">
+                Language
+              </FormLabel>
+
+              <Select
+                value={language}
+                onChange={(e) => setLanguage(e.target.value)}
+              >
+                <option value="en">English</option>
+                <option value="ar">Arabic</option>
+              </Select>
+            </FormControl>
             <FormControl>
               <FormLabel fontSize="sm" fontWeight="normal">
                 Content

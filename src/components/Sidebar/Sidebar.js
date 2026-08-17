@@ -56,14 +56,16 @@ function Sidebar(props) {
     let activeColor = useColorModeValue("gray.700", "white");
     let inactiveColor = useColorModeValue("gray.400", "gray.400");
     let sidebarActiveShadow = "0px 7px 11px rgba(0, 0, 0, 0.04)";
-    return routes.map((prop, key) => {
-      if (prop.redirect) {
-        return null;
-      }
-      if (prop.category) {
-        var st = {};
-        st[prop["state"]] = !state[prop.state];
-        return (
+   return routes
+  .filter((prop) => !prop.hidden) // 👈 ADD THIS LINE
+  .map((prop, key) => {
+    if (prop.redirect) {
+      return null;
+    }
+    if (prop.category) {
+      var st = {};
+      st[prop["state"]] = !state[prop.state];
+      return (
           <>
             <Text
               color={activeColor}

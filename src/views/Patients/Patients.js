@@ -42,15 +42,15 @@ function Patients() {
   }, []);
 
   const patientsData = () => {
-    apiCallUnsecureGet(
-      apiUrl.contactUs,
+    apiCallSecureGet(
+      apiUrl.patients,
       (response) => {
         console.log("Patients", response.list);
         setPatients(response.list);
       },
       (error) => {
         console.log("error", error);
-      }
+      },
     );
   };
 
@@ -66,7 +66,7 @@ function Patients() {
     setDialogOpen(false);
 
     apiCallSecureDelete(
-      apiUrl.contactUs,
+      apiUrl.patients,
       selectedPatient.id,
       (response) => {
         patientsData();
@@ -74,7 +74,7 @@ function Patients() {
       },
       (error) => {
         showError("Something went wrong. Try again!");
-      }
+      },
     );
   };
 
@@ -136,7 +136,6 @@ function Patients() {
                       }
                       report={row.report || null}
                       isLast={index === arr.length - 1}
-                  
                       onDeleteClick={() =>
                         handleDeleteClick({ id: row.id, name: row.name })
                       }

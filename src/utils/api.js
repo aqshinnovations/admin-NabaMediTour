@@ -1,24 +1,38 @@
 import axios from "axios";
 import { isAuthenticated, getAccessToken } from "./session";
+import HospitalDetails from "views/hospitals/HospitalDetails";
 
 // const baseUrl = "http://localhost:8000/";
-const baseUrl = " https://www.indocscare.com:8000/";
+const baseUrl = " https://api.nabameditour.com/";
 
 // const imageBaseUrl = "http://localhost:8000";
-const imageBaseUrl = " https://www.indocscare.com:8000";
+const imageBaseUrl = " https://api.nabameditour.com";
 
 const apiUrl = {
   baseUrl: `${baseUrl}`,
   imageBaseUrl: `${imageBaseUrl}`,
-  patients: `${baseUrl}patients`,
+  patients: `${baseUrl}patients/patients/list/`,
   patientsReport: `${baseUrl}patients/patients-report/`,
   signIn: `${baseUrl}account/sign-in/`,
-  contactUs: `${baseUrl}patients/patients-data/`,
-  Users: `${baseUrl}account/members/`,
-  updateUsers: `${baseUrl}account/update-member/`,
-  Profile: `${baseUrl}account/profile/`,
-  Blogs: `${baseUrl}blogs/blog-data/`,
-  BlogContent: `${baseUrl}blogs/blogContent/`,
+  hospitals: `${baseUrl}hospitals/hospitals/`,
+  hospitalsList: `${baseUrl}hospitals/list/`,
+  deleteHospitals: `${baseUrl}hospitals/hospitals/`,
+  HospitalDetails: `${baseUrl}hospitals/HospitalsDetails/`,
+  Facility: `${baseUrl}hospitals/Facilities/`,
+  Specialty: `${baseUrl}hospitals/specializations/`,
+  Procedure: `${baseUrl}hospitals/procedures/`,
+  hospitalsDoctors: `${baseUrl}hospitals/doctors/`,
+
+  // contactUs: `${baseUrl}patients/patients-data/`,
+  // Users: `${baseUrl}account/members/`,
+  // updateUsers: `${baseUrl}account/update-member/`,
+  // Profile: `${baseUrl}account/profile/`,
+  // Blogs: `${baseUrl}blogs/blog/`,
+  // listBlogs: `${baseUrl}blogs/list/`,
+
+  // BlogContent: `${baseUrl}blogs/blog-data/`,
+  // Hospitals: `${baseUrl}/hospitals/hospitals/`,
+  // HospitalDetails: `${baseUrl}/hospitals/HospitalDetailsAPIS/`,
 };
 
 export { baseUrl, apiUrl };
@@ -56,10 +70,11 @@ export function apiCallUnsecureGet(api, response, error) {
 
 export function apiCallSecureGet(api, response, error) {
   console.log("apiCallSecureGet ", api);
+  console.log("TOKEN:", getAccessToken());
   axios
     .get(api, {
       headers: {
-        Authorization: `Token ${getAccessToken()}`,
+        Authorization: `Bearer ${getAccessToken()}`,
       },
     })
     .then((res) => {
@@ -92,7 +107,7 @@ export function apiCallPostWithForm(api, form, response, error) {
     .post(api, form, {
       headers: {
         "Content-Type": "multipart/form-data",
-        Authorization: `Token ${getAccessToken()}`,
+        Authorization: `Bearer ${getAccessToken()}`,
       },
     })
     .then((res) => {
@@ -125,7 +140,7 @@ export function apiCallPutWithForm(api, form, response, error) {
     .put(api, form, {
       headers: {
         "Content-Type": "multipart/form-data",
-        Authorization: `Token ${getAccessToken()}`,
+        Authorization: `Bearer ${getAccessToken()}`,
       },
     })
     .then((res) => {
@@ -189,12 +204,13 @@ export function uploadFile(api, name, file, response, error) {
 
 export function apiCallPostFormData(api, formData, response, error) {
   console.log("apiCallPostFormData ", api);
+  console.log("token", `Bearer ${getAccessToken()}`);
 
   axios
     .post(api, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
-        Authorization: `Token ${getAccessToken()}`,
+        Authorization: `Bearer ${getAccessToken()}`,
       },
     })
     .then((res) => {
@@ -226,7 +242,7 @@ export function apiCallSecureDelete(api, id, response, error) {
   axios
     .delete(url, {
       headers: {
-        Authorization: `Token ${getAccessToken()}`,
+        Authorization: `Bearer ${getAccessToken()}`,
       },
     })
     .then((res) => {
@@ -289,7 +305,7 @@ export function apiPostSecure(api, data, response, onError) {
   axios
     .post(api, data, {
       headers: {
-        Authorization: `Token ${getAccessToken()}`,
+        Authorization: `Bearer ${getAccessToken()}`,
       },
     })
     .then((res) => {
@@ -330,7 +346,7 @@ export function apiPutSecure(api, data, response, error) {
   axios
     .put(api, data, {
       headers: {
-        // 'Authorization': `Token ${getAccessToken()}`
+        Authorization: `Bearer ${getAccessToken()}`,
       },
     })
     .then((res) => {
@@ -363,7 +379,7 @@ export function apiDownloadFileSecure(api, response, error) {
   axios
     .get(api, {
       headers: {
-        Authorization: `Token ${getAccessToken()}`,
+        Authorization: `Bearer ${getAccessToken()}`,
       },
       responseType: "arraybuffer",
     })
@@ -377,7 +393,7 @@ export function apiDownloadFileSecure(api, response, error) {
 
         const contentDisposition = res.headers["content-disposition"];
         const fileNameMatch = contentDisposition?.match(
-          /filename[^;=\n]*=["']?([^;\n"']+)/
+          /filename[^;=\n]*=["']?([^;\n"']+)/,
         );
         const fileName = fileNameMatch ? fileNameMatch[1] : "downloaded";
         const extension = res.headers["content-type"].split("/")[1];

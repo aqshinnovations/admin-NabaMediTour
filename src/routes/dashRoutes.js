@@ -3,12 +3,13 @@ import Profile from "views/Profile/Profile";
 import Patients from "views/Patients/Patients.js";
 import Users from "views/users/Users";
 import Blogs from "views/Blogs/blogs";
-
+import Hospitals from "views/hospitals/Index";
+import HospitalDetails from "views/hospitals/HospitalDetails";
 import {
   HomeIcon,
   StatsIcon,
   PersonIcon,
-  DocumentIcon,   // for Blogs
+  DocumentIcon, // for Blogs
 } from "components/Icons/Icons";
 const dashRoutes = [
   // {
@@ -46,6 +47,20 @@ const dashRoutes = [
     icon: <PersonIcon color="inherit" />,
     secondaryNavbar: true,
     component: Profile,
+    layout: "/admin",
+  },
+  {
+    path: "/hospitalDetail",
+    name: "Hospital Details",
+    component: HospitalDetails,
+    layout: "/admin",
+    hidden: true,
+  },
+  {
+    path: "/hospital",
+    name: "Hospital",
+    icon: <HomeIcon color="inherit" />,
+    component: Hospitals,
     layout: "/admin",
   },
 ];
