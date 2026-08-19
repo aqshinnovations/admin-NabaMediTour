@@ -22,6 +22,15 @@ const apiUrl = {
   Specialty: `${baseUrl}hospitals/specializations/`,
   Procedure: `${baseUrl}hospitals/procedures/`,
   hospitalsDoctors: `${baseUrl}hospitals/doctors/`,
+  Doctors: `${baseUrl}doctors/doctors/`,
+  DoctorsList: `${baseUrl}doctors/list/`,
+  DoctorsDetails: `${baseUrl}doctors/DoctorsDetails/`,
+
+  Category: `${baseUrl}doctors/category/`,
+
+  qualificationsList: `${baseUrl}doctors/qualification/list/`,
+  qualification: `${baseUrl}doctors/qualification/`,
+  Gallery: `${baseUrl}doctors/images/`,
 
   // contactUs: `${baseUrl}patients/patients-data/`,
   // Users: `${baseUrl}account/members/`,

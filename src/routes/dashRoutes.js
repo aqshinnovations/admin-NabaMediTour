@@ -11,6 +11,8 @@ import {
   PersonIcon,
   DocumentIcon, // for Blogs
 } from "components/Icons/Icons";
+import Doctors from "views/Doctors/Index";
+import DoctorsDetails from "views/Doctors/DoctorsDetails";
 const dashRoutes = [
   // {
   //   path: "/dashboard",
@@ -62,6 +64,20 @@ const dashRoutes = [
     icon: <HomeIcon color="inherit" />,
     component: Hospitals,
     layout: "/admin",
+  },
+  {
+    path: "/doctors",
+    name: "Doctors",
+    icon: <HomeIcon color="inherit" />,
+    component: Doctors,
+    layout: "/admin",
+  },
+  {
+    path: "/doctorDetail",
+    name: "Doctor Details",
+    component: DoctorsDetails,
+    layout: "/admin",
+    hidden: true,
   },
 ];
 
