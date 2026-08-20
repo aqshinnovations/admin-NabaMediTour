@@ -25,6 +25,13 @@ import GalleryList from "./components/Gallery/galleryList";
 import AddGallery from "./components/Gallery/addGallery";
 import UpdateProcedure from "./components/Gallery/updateProcedures";
 import QualificationsList from "./components/Qualifications/qualificationsList";
+import { showError, showSucess } from "utils/toast";
+import SpecializationsList from "./components/Specializations/specializationsList";
+import AddSpecializations from "./components/Specializations/addSpecializations";
+import UpdateSpecialization from "./components/Specializations/updateSpecialization";
+import AwardsList from "./components/Awards/awardsList";
+import UpdateAward from "./components/Awards/updateAwards";
+import AddAward from "./components/Awards/addAwards";
 function DoctorsDetails() {
   const location = useLocation();
   const { colorMode } = useColorMode();
@@ -78,7 +85,19 @@ function DoctorsDetails() {
     onOpen: onUpdateDoctorOpen,
     onClose: onUpdateDoctorClose,
   } = useDisclosure();
+  const {
+    isOpen: isAwardOpen,
+    onOpen: onAwardOpen,
+    onClose: onAwardClose,
+  } = useDisclosure();
 
+  const {
+    isOpen: isUpdateAwardOpen,
+    onOpen: onUpdateAwardOpen,
+    onClose: onUpdateAwardClose,
+  } = useDisclosure();
+
+  const [selectedAward, setSelectedAward] = useState(null);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [selectedFacility, setSelectedFacility] = useState(null);
   const [selectedSpecialty, setSelectedSpecialty] = useState(null);
@@ -124,6 +143,16 @@ function DoctorsDetails() {
   //   setSelectedFacility(facility);
   //   onDeleteOpen();
   // };
+  const handleEditAward = (award) => {
+    setSelectedAward(award);
+    onUpdateAwardOpen();
+  };
+
+  const handleDeleteAwardClick = (award) => {
+    setSelectedAward(award);
+    setDeleteType("award");
+    onDeleteOpen();
+  };
   const handleEditDoctor = (doctor) => {
     setSelectedDoctor(doctor);
     onUpdateDoctorOpen();
@@ -138,6 +167,8 @@ function DoctorsDetails() {
     onUpdateFacilityOpen();
   };
   const handleEditSpecialty = (specialty) => {
+    console.log("Selected Specialization ID:", specialty.id);
+
     setSelectedSpecialty(specialty);
     onUpdateSpecialtyOpen();
   };
@@ -231,7 +262,7 @@ function DoctorsDetails() {
       if (!selectedSpecialty?.id) return;
 
       apiCallSecureDelete(
-        apiUrl.Specialty,
+        apiUrl.doctorSpecializations,
         selectedSpecialty.id,
         (response) => {
           console.log("Specialty deleted:", response);
@@ -255,6 +286,7 @@ function DoctorsDetails() {
         selectedProcedure.id,
         (response) => {
           console.log("Procedure deleted:", response);
+          showSucess("Image Deleted Successfully! ");
 
           onDeleteClose();
           setSelectedProcedure(null);
@@ -265,6 +297,7 @@ function DoctorsDetails() {
         },
         (error) => {
           console.log("Delete procedure error:", error);
+          showSucess(error || "Something went wrong");
         },
       );
     }
@@ -285,6 +318,27 @@ function DoctorsDetails() {
         },
         (error) => {
           console.log("Delete doctor error:", error);
+        },
+      );
+    }
+    if (deleteType === "award") {
+      if (!selectedAward?.id) return;
+
+      apiCallSecureDelete(
+        apiUrl.doctorAwards,
+        selectedAward.id,
+        (response) => {
+          console.log("Award deleted:", response);
+
+          onDeleteClose();
+          setSelectedAward(null);
+          setDeleteType(null);
+
+          HospitalsData();
+        },
+        (error) => {
+          console.log("Delete award error:", error);
+          showError("Failed to delete award");
         },
       );
     }
@@ -352,7 +406,7 @@ function DoctorsDetails() {
       <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
         <CardHeader p="6px 0px 22px 0px">
           <div>
-            <h2>Hospital Details</h2>
+            <h2>Doctor Detail</h2>
 
             <>
               {hospitalDetails ? (
@@ -433,7 +487,53 @@ function DoctorsDetails() {
                       onDelete={handleDeleteClick}
                     />
                     {/* Specialties */}
+                    <Flex
+                      justify="space-between"
+                      align="center"
+                      mb="15px"
+                      px="10px"
+                    >
+                      <Text fontSize="lg" fontWeight="bold">
+                        Specializations
+                      </Text>
 
+                      <Button
+                        variant={colorMode === "primary" ? "dark" : "primary"}
+                        onClick={onSpecialtyOpen}
+                      >
+                        Add Specializations
+                      </Button>
+                    </Flex>
+                    <SpecializationsList
+                      facilities={hospitalDetails.specialists}
+                      onEdit={handleEditSpecialty}
+                      onDelete={handleDeleteSpecialtyClick}
+                    />
+                    {/*  */}
+                    {/* Awards */}
+                    <Flex
+                      justify="space-between"
+                      align="center"
+                      mb="15px"
+                      px="10px"
+                    >
+                      <Text fontSize="lg" fontWeight="bold">
+                        Awards
+                      </Text>
+
+                      <Button
+                        variant={colorMode === "primary" ? "dark" : "primary"}
+                        onClick={onAwardOpen}
+                      >
+                        Add Awards
+                      </Button>
+                    </Flex>
+
+                    <AwardsList
+                      awards={hospitalDetails.awards}
+                      onEdit={handleEditAward}
+                      onDelete={handleDeleteAwardClick}
+                    />
                     {/*  Procedures*/}
                     <Flex
                       justify="space-between"
@@ -442,14 +542,14 @@ function DoctorsDetails() {
                       px="10px"
                     >
                       <Text fontSize="lg" fontWeight="bold">
-                        Procedures
+                        Gallery
                       </Text>
 
                       <Button
                         variant={colorMode === "primary" ? "dark" : "primary"}
                         onClick={onProcedureOpen}
                       >
-                        Add Procedures
+                        Add Gallery
                       </Button>
                     </Flex>
 
@@ -482,9 +582,11 @@ function DoctorsDetails() {
               {deleteType === "specialty"
                 ? "Specialty"
                 : deleteType === "procedure"
-                ? "Procedure"
+                ? "Gallery"
                 : deleteType === "doctor"
                 ? "Doctor"
+                : deleteType === "award"
+                ? "Award"
                 : "Facility"}
             </AlertDialogHeader>
             <AlertDialogBody>
@@ -496,6 +598,8 @@ function DoctorsDetails() {
                   ? selectedProcedure?.name_en
                   : deleteType === "doctor"
                   ? selectedDoctor?.name_en
+                  : deleteType === "award"
+                  ? selectedAward?.name_en
                   : selectedFacility?.name_en}
               </b>
               ?
@@ -534,6 +638,15 @@ function DoctorsDetails() {
           onProcedureClose();
         }}
       />
+      <AddSpecializations
+        isOpen={isSpecialtyOpen}
+        onClose={onSpecialtyClose}
+        hospitalId={hospitalID}
+        onSuccess={() => {
+          HospitalsData();
+          onSpecialtyClose();
+        }}
+      />
 
       <UpdateQualification
         isOpen={isUpdateFacilityOpen}
@@ -560,6 +673,44 @@ function DoctorsDetails() {
         onSuccess={() => {
           setSelectedProcedure(null);
           onUpdateProcedureClose();
+          HospitalsData();
+        }}
+      />
+      <UpdateSpecialization
+        isOpen={isUpdateSpecialtyOpen}
+        onClose={() => {
+          onUpdateSpecialtyClose();
+          setSelectedSpecialty(null);
+        }}
+        specialization={selectedSpecialty}
+        hospitalId={hospitalID}
+        onSuccess={() => {
+          setSelectedSpecialty(null);
+          onUpdateSpecialtyClose();
+          HospitalsData();
+        }}
+      />
+      <AddAward
+        isOpen={isAwardOpen}
+        onClose={onAwardClose}
+        hospitalId={hospitalID}
+        onSuccess={() => {
+          HospitalsData();
+          onAwardClose();
+        }}
+      />
+
+      <UpdateAward
+        isOpen={isUpdateAwardOpen}
+        onClose={() => {
+          onUpdateAwardClose();
+          setSelectedAward(null);
+        }}
+        award={selectedAward}
+        hospitalId={hospitalID}
+        onSuccess={() => {
+          setSelectedAward(null);
+          onUpdateAwardClose();
           HospitalsData();
         }}
       />

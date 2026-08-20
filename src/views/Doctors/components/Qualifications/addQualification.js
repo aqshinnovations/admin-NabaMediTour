@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -15,12 +15,23 @@ import {
   SimpleGrid,
 } from "@chakra-ui/react";
 import { apiPostSecure, apiUrl } from "utils/api";
+import { showError, showSucess } from "utils/toast";
+
 function AddQualification({ isOpen, onClose, hospitalId, onSuccess }) {
   const [formData, setFormData] = useState({
     name_en: "",
     name_ar: "",
   });
 
+  // Reset form every time modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setFormData({
+        name_en: "",
+        name_ar: "",
+      });
+    }
+  }, [isOpen]);
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -33,7 +44,7 @@ function AddQualification({ isOpen, onClose, hospitalId, onSuccess }) {
   const handleSubmit = async () => {
     try {
       console.log("Hospital ID:", hospitalId);
-      console.log("Facility Data:", formData);
+      console.log("Qualifications Data:", formData);
 
       apiPostSecure(
         apiUrl.qualification,
@@ -48,7 +59,7 @@ function AddQualification({ isOpen, onClose, hospitalId, onSuccess }) {
         },
         (error) => {
           console.log(error);
-          showSucess("Something went wrong");
+          showSucess(error || "Something went wrong");
         },
       );
 
@@ -64,24 +75,24 @@ function AddQualification({ isOpen, onClose, hospitalId, onSuccess }) {
       <ModalOverlay />
 
       <ModalContent>
-        <ModalHeader>Add Facility</ModalHeader>
+        <ModalHeader>Add Qualifications</ModalHeader>
 
         <ModalCloseButton />
 
         <ModalBody>
           <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
             <FormControl>
-              <FormLabel>Facility Name English</FormLabel>
+              <FormLabel>Qualifications Name English</FormLabel>
               <Input
                 name="name_en"
                 value={formData.name_en}
                 onChange={handleChange}
-                placeholder="Enter facility name"
+                placeholder="Enter Qualifications name"
               />
             </FormControl>
 
             <FormControl>
-              <FormLabel>Facility Name Arabic</FormLabel>
+              <FormLabel>Qualifications Name Arabic</FormLabel>
               <Input
                 name="name_ar"
                 value={formData.name_ar}
@@ -98,7 +109,7 @@ function AddQualification({ isOpen, onClose, hospitalId, onSuccess }) {
           </Button>
 
           <Button colorScheme="blue" onClick={handleSubmit}>
-            Add Facility
+            Add Qualifications
           </Button>
         </ModalFooter>
       </ModalContent>

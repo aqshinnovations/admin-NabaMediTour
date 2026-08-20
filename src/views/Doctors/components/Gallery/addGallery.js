@@ -76,7 +76,7 @@ function addGallery({ isOpen, onClose, hospitalId, onSuccess }) {
       },
       (error) => {
         console.log("Add procedure error:", error);
-        showSucess(" Something went wrong");
+        showSucess(error || "Something went wrong");
 
         setLoading(false);
       },

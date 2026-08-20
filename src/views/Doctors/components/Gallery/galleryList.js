@@ -1,8 +1,15 @@
 import React from "react";
-import { Box, Flex, Text, Button, Image, Icon } from "@chakra-ui/react";
-import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
+import {
+  Box,
+  SimpleGrid,
+  Image,
+  IconButton,
+  Text,
+  Icon,
+} from "@chakra-ui/react";
+import { FaTrashAlt } from "react-icons/fa";
 
-function GalleryList({ procedures = [], onEdit, onDelete }) {
+function GalleryList({ procedures = [], onDelete }) {
   if (!procedures || procedures.length === 0) {
     return (
       <Box
@@ -13,66 +20,50 @@ function GalleryList({ procedures = [], onEdit, onDelete }) {
         textAlign="center"
         mb="20px"
       >
-        <Text>No Procedures Found</Text>
+        <Text>No Images Found</Text>
       </Box>
     );
   }
 
   return (
     <Box mb="25px">
-      {procedures.map((procedure) => (
-        <Box
-          key={procedure.id}
-          border="1px solid hsla(44, 15%, 25%, 0.40)"
-          borderRadius="16px"
-          p="15px"
-          mb="10px"
-        >
-          <Flex
-            align="center"
-            justify="space-between"
-            gap="20px"
-            flexWrap="wrap"
+      <SimpleGrid columns={{ base: 2, md: 3, lg: 5 }} spacing="15px">
+        {procedures.map((procedure) => (
+          <Box
+            key={procedure.id}
+            position="relative"
+            border="1px solid hsla(44, 15%, 25%, 0.40)"
+            borderRadius="12px"
+            overflow="hidden"
+            bg="white"
           >
-            {/* Procedure Image */}
+            {/* Image */}
             {procedure.image && (
               <Image
                 src={procedure.image}
-                alt={procedure.name_en}
-                width="90px"
-                height="70px"
+                alt={procedure.name_en || "Gallery Image"}
+                width="100%"
+                height="150px"
                 objectFit="cover"
-                borderRadius="10px"
               />
             )}
 
-            {/* English */}
-
-            {/* Buttons */}
-            <Flex gap="8px" align="center">
-              <Button
-                p="0px"
-                bg="transparent"
-                onClick={() => onEdit(procedure)}
-              >
-                <Flex color="blue.500" align="center">
-                  <Icon as={FaPencilAlt} me="4px" />
-                </Flex>
-              </Button>
-
-              <Button
-                p="0px"
-                bg="transparent"
-                onClick={() => onDelete(procedure)}
-              >
-                <Flex color="red.500" align="center">
-                  <Icon as={FaTrashAlt} me="4px" />
-                </Flex>
-              </Button>
-            </Flex>
-          </Flex>
-        </Box>
-      ))}
+            {/* Delete Button */}
+            <IconButton
+              aria-label="Delete image"
+              icon={<Icon as={FaTrashAlt} />}
+              position="absolute"
+              top="8px"
+              right="8px"
+              size="sm"
+              colorScheme="red"
+              variant="solid"
+              borderRadius="full"
+              onClick={() => onDelete(procedure)}
+            />
+          </Box>
+        ))}
+      </SimpleGrid>
     </Box>
   );
 }

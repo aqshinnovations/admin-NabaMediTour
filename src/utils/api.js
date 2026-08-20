@@ -29,6 +29,11 @@ const apiUrl = {
   Category: `${baseUrl}doctors/category/`,
 
   qualificationsList: `${baseUrl}doctors/qualification/list/`,
+  specializationsList: `${baseUrl}doctors/specialist/list/`,
+  doctorSpecializations: `${baseUrl}doctors/specialist/`,
+  awardsList: `${baseUrl}/doctors/awards/list/`,
+  doctorAwards: `${baseUrl}doctors/awards/`,
+
   qualification: `${baseUrl}doctors/qualification/`,
   Gallery: `${baseUrl}doctors/images/`,
 
