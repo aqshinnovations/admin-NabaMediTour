@@ -17,7 +17,7 @@ import {
 import { apiPostSecure, apiUrl } from "utils/api";
 import { showError, showSucess } from "utils/toast";
 
-function AddSpecializations({ isOpen, onClose, hospitalId, onSuccess }) {
+function AddSpecializations({ isOpen, onClose, doctorId, onSuccess }) {
   const [formData, setFormData] = useState({
     name_en: "",
     name_ar: "",
@@ -43,13 +43,13 @@ function AddSpecializations({ isOpen, onClose, hospitalId, onSuccess }) {
 
   const handleSubmit = async () => {
     try {
-      console.log("Hospital ID:", hospitalId);
+      console.log("Hospital ID:", doctorId);
       console.log("Qualifications Data:", formData);
 
       apiPostSecure(
         apiUrl.doctorSpecializations,
         {
-          doctor_id: hospitalId,
+          doctor_id: doctorId,
           ...formData,
         },
         (response) => {

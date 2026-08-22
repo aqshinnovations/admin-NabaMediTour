@@ -9,10 +9,12 @@ import {
   HomeIcon,
   StatsIcon,
   PersonIcon,
-  DocumentIcon, // for Blogs
+  DocumentIcon,
 } from "components/Icons/Icons";
 import Doctors from "views/Doctors/Index";
 import DoctorsDetails from "views/Doctors/DoctorsDetails";
+import { FaHospital, FaUserMd } from "react-icons/fa";
+
 const dashRoutes = [
   // {
   //   path: "/dashboard",
@@ -22,10 +24,17 @@ const dashRoutes = [
   //   layout: "/admin",
   // },
   {
-    path: "/users",
-    name: "Users",
-    icon: <PersonIcon color="inherit" />,
-    component: Users,
+    path: "/hospital",
+    name: "Hospital",
+    icon: <FaHospital color="inherit" />,
+    component: Hospitals,
+    layout: "/admin",
+  },
+  {
+    path: "/doctors",
+    name: "Doctors",
+    icon: <FaUserMd color="inherit" />,
+    component: Doctors,
     layout: "/admin",
   },
   {
@@ -35,6 +44,14 @@ const dashRoutes = [
     component: Patients,
     layout: "/admin",
   },
+  {
+    path: "/users",
+    name: "Users",
+    icon: <PersonIcon color="inherit" />,
+    component: Users,
+    layout: "/admin",
+  },
+
   {
     path: "/blogs",
     name: "blogs",
@@ -58,22 +75,9 @@ const dashRoutes = [
     layout: "/admin",
     hidden: true,
   },
+
   {
-    path: "/hospital",
-    name: "Hospital",
-    icon: <HomeIcon color="inherit" />,
-    component: Hospitals,
-    layout: "/admin",
-  },
-  {
-    path: "/doctors",
-    name: "Doctors",
-    icon: <HomeIcon color="inherit" />,
-    component: Doctors,
-    layout: "/admin",
-  },
-  {
-    path: "/doctorDetail",
+    path: "/doctorDetail/:id",
     name: "Doctor Details",
     component: DoctorsDetails,
     layout: "/admin",

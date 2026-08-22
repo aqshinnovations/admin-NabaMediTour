@@ -2,9 +2,9 @@ import React from "react";
 import { Flex, Text, Button, Icon } from "@chakra-ui/react";
 import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 
-function QualificationsList({ facilities, onEdit, onDelete }) {
-  if (!facilities || facilities.length === 0) {
-    return <Text p="15px">No Facilities Found</Text>;
+function QualificationsList({ qualifications, onEdit, onDelete }) {
+  if (!qualifications || qualifications.length === 0) {
+    return <Text p="15px">No qualifications Found</Text>;
   }
 
   return (
@@ -16,7 +16,7 @@ function QualificationsList({ facilities, onEdit, onDelete }) {
         padding: "10px",
       }}
     >
-      {facilities.map((facility) => (
+      {qualifications.map((facility) => (
         <div
           key={facility.id}
           style={{
@@ -28,7 +28,7 @@ function QualificationsList({ facilities, onEdit, onDelete }) {
         >
           {/* English + Arabic */}
           <Flex justify="space-between" align="center" gap="15px" mb="12px">
-            <Text fontSize="md" fontWeight="bold" flex="1">
+            <Text fontSize="sm" flex="1">
               {facility.name_en}
             </Text>
 

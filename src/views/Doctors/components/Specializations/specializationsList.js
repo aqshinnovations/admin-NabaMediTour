@@ -28,7 +28,7 @@ function SpecializationsList({ facilities, onEdit, onDelete }) {
         >
           {/* English + Arabic */}
           <Flex justify="space-between" align="center" gap="15px" mb="12px">
-            <Text fontSize="md" fontWeight="bold" flex="1">
+            <Text fontSize="sm" flex="1">
               {facility.name_en}
             </Text>
 

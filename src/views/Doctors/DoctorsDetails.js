@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
@@ -16,7 +15,7 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
 } from "@chakra-ui/react";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { apiCallSecureGet, apiCallSecureDelete, apiUrl } from "utils/api";
 import AddQualification from "./components/Qualifications/addQualification";
 import UpdateQualification from "./components/Qualifications/updateQualification";
@@ -32,13 +31,13 @@ import UpdateSpecialization from "./components/Specializations/updateSpecializat
 import AwardsList from "./components/Awards/awardsList";
 import UpdateAward from "./components/Awards/updateAwards";
 import AddAward from "./components/Awards/addAwards";
+
 function DoctorsDetails() {
-  const location = useLocation();
   const { colorMode } = useColorMode();
   const {
-    isOpen: isFacilityOpen,
-    onOpen: onFacilityOpen,
-    onClose: onFacilityClose,
+    isOpen: isQualificationOpen,
+    onOpen: onQualificationOpen,
+    onClose: onQualificationClose,
   } = useDisclosure();
   const {
     isOpen: isSpecialtyOpen,
@@ -51,9 +50,9 @@ function DoctorsDetails() {
     onClose: onDeleteClose,
   } = useDisclosure();
   const {
-    isOpen: isUpdateFacilityOpen,
-    onOpen: onUpdateFacilityOpen,
-    onClose: onUpdateFacilityClose,
+    isOpen: isUpdateQualificationOpen,
+    onOpen: onUpdateQualificationOpen,
+    onClose: onUpdateQualificationClose,
   } = useDisclosure();
   const {
     isOpen: isUpdateSpecialtyOpen,
@@ -99,50 +98,35 @@ function DoctorsDetails() {
 
   const [selectedAward, setSelectedAward] = useState(null);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
-  const [selectedFacility, setSelectedFacility] = useState(null);
+  const [selectedQualification, setSelectedQualification] = useState(null);
   const [selectedSpecialty, setSelectedSpecialty] = useState(null);
   const cancelRef = React.useRef();
-  const hospital = location.state?.hospital;
-  const { id } = useParams();
-  const [hospitalID, setHospitalID] = useState(id);
-  const [hospitalDetails, setHospitalDetails] = useState(null);
+
+  const { id: doctorId } = useParams();
+  const [doctorDetails, setDoctorDetails] = useState(null);
   const [deleteType, setDeleteType] = useState(null);
-  console.log("Hospital Data:", hospital);
 
+  console.log("Doctor ID:", doctorId);
+  console.log("Doctor ID:", doctorId);
   useEffect(() => {
-    if (hospital?.id) {
-      setHospitalID(hospital.id);
-      localStorage.setItem("hospitalID", hospital.id);
-    } else {
-      const storedId = localStorage.getItem("hospitalID");
-      if (storedId) setHospitalID(storedId);
-    }
-  }, [hospital]);
-  useEffect(() => {
-    if (!hospitalID) return;
+    if (!doctorId) return;
 
-    HospitalsData();
-  }, [hospitalID]);
+    DoctorsData();
+  }, [doctorId]);
 
-  const HospitalsData = () => {
-    if (!hospitalID) return;
-
+  const DoctorsData = () => {
     apiCallSecureGet(
-      `${apiUrl.DoctorsDetails}?id=${hospitalID}`,
+      `${apiUrl.DoctorsDetails}?id=${doctorId}`,
       (response) => {
-        console.log("Hospitals", response.data);
-        setHospitalDetails(response.data);
+        console.log("Doctor Details:", response.data);
+        setDoctorDetails(response.data);
       },
       (error) => {
-        console.log("error", error);
+        console.log("Doctor Details Error:", error);
       },
     );
   };
 
-  // const handleDeleteClick = (facility) => {
-  //   setSelectedFacility(facility);
-  //   onDeleteOpen();
-  // };
   const handleEditAward = (award) => {
     setSelectedAward(award);
     onUpdateAwardOpen();
@@ -162,34 +146,15 @@ function DoctorsDetails() {
     setDeleteType("doctor");
     onDeleteOpen();
   };
-  const handleEditFacility = (facility) => {
-    setSelectedFacility(facility);
-    onUpdateFacilityOpen();
+  const handleEditQualification = (qualification) => {
+    setSelectedQualification(qualification);
+    onUpdateQualificationOpen();
   };
   const handleEditSpecialty = (specialty) => {
     console.log("Selected Specialization ID:", specialty.id);
 
     setSelectedSpecialty(specialty);
     onUpdateSpecialtyOpen();
-  };
-  const handleDeleteQualification = () => {
-    if (!selectedFacility?.id) return;
-
-    apiCallSecureDelete(
-      apiUrl.qualification,
-      selectedFacility.id,
-      (response) => {
-        console.log("Facility deleted:", response);
-
-        onDeleteClose();
-        setSelectedFacility(null);
-
-        HospitalsData();
-      },
-      (error) => {
-        console.log("Delete facility error:", error);
-      },
-    );
   };
 
   const handleEditProcedure = (procedure) => {
@@ -216,7 +181,7 @@ function DoctorsDetails() {
         setSelectedSpecialty(null);
 
         // Refresh hospital details
-        HospitalsData();
+        DoctorsData();
       },
       (error) => {
         console.log("Delete specialty error:", error);
@@ -224,9 +189,9 @@ function DoctorsDetails() {
     );
   };
 
-  const handleDeleteClick = (facility) => {
-    setSelectedFacility(facility);
-    setDeleteType("facility");
+  const handleDeleteQualificationClick = (qualification) => {
+    setSelectedQualification(qualification);
+    setDeleteType("qualification");
     onDeleteOpen();
   };
 
@@ -237,25 +202,29 @@ function DoctorsDetails() {
   };
 
   const handleDelete = () => {
-    if (deleteType === "facility") {
-      if (!selectedFacility?.id) return;
+    if (deleteType === "qualification") {
+      if (!selectedQualification?.id) return;
 
       apiCallSecureDelete(
         apiUrl.qualification,
-        selectedFacility.id,
+        selectedQualification.id,
         (response) => {
-          console.log("Facility deleted:", response);
+          console.log("Qualification deleted:", response);
+          showSucess("Qualification deleted successfully!");
 
           onDeleteClose();
-          setSelectedFacility(null);
+          setSelectedQualification(null);
           setDeleteType(null);
 
-          HospitalsData();
+          DoctorsData();
         },
         (error) => {
-          console.log("Delete facility error:", error);
+          console.log("Delete qualification error:", error);
+          showError("Failed to delete qualification");
         },
       );
+
+      return;
     }
 
     if (deleteType === "specialty") {
@@ -271,7 +240,7 @@ function DoctorsDetails() {
           setSelectedSpecialty(null);
           setDeleteType(null);
 
-          HospitalsData();
+          DoctorsData();
         },
         (error) => {
           console.log("Delete specialty error:", error);
@@ -293,7 +262,7 @@ function DoctorsDetails() {
           setDeleteType(null);
 
           // Refresh hospital details
-          HospitalsData();
+          DoctorsData();
         },
         (error) => {
           console.log("Delete procedure error:", error);
@@ -314,7 +283,7 @@ function DoctorsDetails() {
           setSelectedDoctor(null);
           setDeleteType(null);
 
-          HospitalsData();
+          DoctorsData();
         },
         (error) => {
           console.log("Delete doctor error:", error);
@@ -334,7 +303,7 @@ function DoctorsDetails() {
           setSelectedAward(null);
           setDeleteType(null);
 
-          HospitalsData();
+          DoctorsData();
         },
         (error) => {
           console.log("Delete award error:", error);
@@ -409,7 +378,7 @@ function DoctorsDetails() {
             <h2>Doctor Detail</h2>
 
             <>
-              {hospitalDetails ? (
+              {doctorDetails ? (
                 <>
                   <CardBody>
                     <div
@@ -428,10 +397,10 @@ function DoctorsDetails() {
                       <div style={{ display: "flex", gap: "20px" }}>
                         {/* Image */}
                         <img
-                          src={hospitalDetails.image}
-                          alt="hospital"
+                          src={doctorDetails.image}
+                          alt="doctor"
                           style={{
-                            width: "50%",
+                            width: "200px",
                             borderRadius: "10px",
                             objectFit: "cover",
                             border: "1px solid black",
@@ -444,11 +413,11 @@ function DoctorsDetails() {
                             <span
                               style={{ fontWeight: "700", fontSize: "24px" }}
                             >
-                              {hospitalDetails.name_en}
+                              {doctorDetails.name_en}
                             </span>
                           </p>
 
-                          <p>{hospitalDetails.about_en}</p>
+                          <p>{doctorDetails.about_en}</p>
                           <div
                             style={{
                               display: "flex",
@@ -476,15 +445,15 @@ function DoctorsDetails() {
 
                       <Button
                         variant={colorMode === "primary" ? "dark" : "primary"}
-                        onClick={onFacilityOpen}
+                        onClick={onQualificationOpen}
                       >
                         Add Qualifications
                       </Button>
                     </Flex>
                     <QualificationsList
-                      facilities={hospitalDetails.qualifications}
-                      onEdit={handleEditFacility}
-                      onDelete={handleDeleteClick}
+                      qualifications={doctorDetails.qualifications}
+                      onEdit={handleEditQualification}
+                      onDelete={handleDeleteQualificationClick}
                     />
                     {/* Specialties */}
                     <Flex
@@ -505,7 +474,7 @@ function DoctorsDetails() {
                       </Button>
                     </Flex>
                     <SpecializationsList
-                      facilities={hospitalDetails.specialists}
+                      facilities={doctorDetails.specialists}
                       onEdit={handleEditSpecialty}
                       onDelete={handleDeleteSpecialtyClick}
                     />
@@ -530,7 +499,7 @@ function DoctorsDetails() {
                     </Flex>
 
                     <AwardsList
-                      awards={hospitalDetails.awards}
+                      awards={doctorDetails.awards}
                       onEdit={handleEditAward}
                       onDelete={handleDeleteAwardClick}
                     />
@@ -554,7 +523,7 @@ function DoctorsDetails() {
                     </Flex>
 
                     <GalleryList
-                      procedures={hospitalDetails.images}
+                      procedures={doctorDetails.images}
                       onEdit={handleEditProcedure}
                       onDelete={handleDeleteProcedureClick}
                     />
@@ -580,15 +549,16 @@ function DoctorsDetails() {
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
               Delete{" "}
               {deleteType === "specialty"
-                ? "Specialty"
+                ? "Specialization"
                 : deleteType === "procedure"
                 ? "Gallery"
                 : deleteType === "doctor"
                 ? "Doctor"
                 : deleteType === "award"
                 ? "Award"
-                : "Facility"}
+                : "Qualification"}
             </AlertDialogHeader>
+
             <AlertDialogBody>
               Are you sure you want to delete{" "}
               <b>
@@ -600,7 +570,7 @@ function DoctorsDetails() {
                   ? selectedDoctor?.name_en
                   : deleteType === "award"
                   ? selectedAward?.name_en
-                  : selectedFacility?.name_en}
+                  : selectedQualification?.name_en}
               </b>
               ?
               <br />
@@ -619,46 +589,14 @@ function DoctorsDetails() {
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
-      <AddQualification
-        isOpen={isFacilityOpen}
-        onClose={onFacilityClose}
-        hospitalId={hospitalID}
-        onSuccess={() => {
-          HospitalsData();
-          onFacilityClose();
-        }}
-      />
 
       <AddGallery
         isOpen={isProcedureOpen}
         onClose={onProcedureClose}
-        hospitalId={hospitalID}
+        doctorId={doctorId}
         onSuccess={() => {
-          HospitalsData();
+          DoctorsData();
           onProcedureClose();
-        }}
-      />
-      <AddSpecializations
-        isOpen={isSpecialtyOpen}
-        onClose={onSpecialtyClose}
-        hospitalId={hospitalID}
-        onSuccess={() => {
-          HospitalsData();
-          onSpecialtyClose();
-        }}
-      />
-
-      <UpdateQualification
-        isOpen={isUpdateFacilityOpen}
-        onClose={() => {
-          onUpdateFacilityClose();
-          setSelectedFacility(null);
-        }}
-        facility={selectedFacility}
-        hospitalId={hospitalID}
-        onSuccess={() => {
-          setSelectedFacility(null);
-          HospitalsData();
         }}
       />
 
@@ -669,11 +607,46 @@ function DoctorsDetails() {
           setSelectedProcedure(null);
         }}
         procedure={selectedProcedure}
-        hospitalId={hospitalID}
+        doctorId={doctorId}
         onSuccess={() => {
           setSelectedProcedure(null);
           onUpdateProcedureClose();
-          HospitalsData();
+          DoctorsData();
+        }}
+      />
+
+      {/* Qaulification */}
+      <AddQualification
+        isOpen={isQualificationOpen}
+        onClose={onQualificationClose}
+        doctorId={doctorId}
+        onSuccess={() => {
+          DoctorsData();
+          onQualificationClose();
+        }}
+      />
+      <UpdateQualification
+        isOpen={isUpdateQualificationOpen}
+        onClose={() => {
+          onUpdateQualificationClose();
+          setSelectedQualification(null);
+        }}
+        facility={selectedQualification}
+        doctorId={doctorId}
+        onSuccess={() => {
+          setSelectedQualification(null);
+          DoctorsData();
+        }}
+      />
+
+      {/* Specializations */}
+      <AddSpecializations
+        isOpen={isSpecialtyOpen}
+        onClose={onSpecialtyClose}
+        doctorId={doctorId}
+        onSuccess={() => {
+          DoctorsData();
+          onSpecialtyClose();
         }}
       />
       <UpdateSpecialization
@@ -683,23 +656,24 @@ function DoctorsDetails() {
           setSelectedSpecialty(null);
         }}
         specialization={selectedSpecialty}
-        hospitalId={hospitalID}
+        doctorId={doctorId}
         onSuccess={() => {
           setSelectedSpecialty(null);
           onUpdateSpecialtyClose();
-          HospitalsData();
-        }}
-      />
-      <AddAward
-        isOpen={isAwardOpen}
-        onClose={onAwardClose}
-        hospitalId={hospitalID}
-        onSuccess={() => {
-          HospitalsData();
-          onAwardClose();
+          DoctorsData();
         }}
       />
 
+      {/* Awards */}
+      <AddAward
+        isOpen={isAwardOpen}
+        onClose={onAwardClose}
+        doctorId={doctorId}
+        onSuccess={() => {
+          DoctorsData();
+          onAwardClose();
+        }}
+      />
       <UpdateAward
         isOpen={isUpdateAwardOpen}
         onClose={() => {
@@ -707,11 +681,11 @@ function DoctorsDetails() {
           setSelectedAward(null);
         }}
         award={selectedAward}
-        hospitalId={hospitalID}
+        doctorId={doctorId}
         onSuccess={() => {
           setSelectedAward(null);
           onUpdateAwardClose();
-          HospitalsData();
+          DoctorsData();
         }}
       />
     </Flex>
