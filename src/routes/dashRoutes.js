@@ -14,6 +14,7 @@ import {
 import Doctors from "views/Doctors/Index";
 import DoctorsDetails from "views/Doctors/DoctorsDetails";
 import { FaHospital, FaUserMd } from "react-icons/fa";
+import Services from "views/Services/Services";
 
 const dashRoutes = [
   // {
@@ -82,6 +83,14 @@ const dashRoutes = [
     component: DoctorsDetails,
     layout: "/admin",
     hidden: true,
+  },
+  {
+    path: "/ervices",
+    name: "services",
+    icon: <PersonIcon color="inherit" />,
+    secondaryNavbar: true,
+    component: Services,
+    layout: "/admin",
   },
 ];
 

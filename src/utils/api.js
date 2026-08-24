@@ -25,28 +25,19 @@ const apiUrl = {
   Doctors: `${baseUrl}doctors/doctors/`,
   DoctorsList: `${baseUrl}doctors/list/`,
   DoctorsDetails: `${baseUrl}doctors/DoctorsDetails/`,
-
   Category: `${baseUrl}doctors/category/`,
-
   qualificationsList: `${baseUrl}doctors/qualification/list/`,
   specializationsList: `${baseUrl}doctors/specialist/list/`,
   doctorSpecializations: `${baseUrl}doctors/specialist/`,
   awardsList: `${baseUrl}/doctors/awards/list/`,
   doctorAwards: `${baseUrl}doctors/awards/`,
-
   qualification: `${baseUrl}doctors/qualification/`,
   Gallery: `${baseUrl}doctors/images/`,
-
-  // contactUs: `${baseUrl}patients/patients-data/`,
-  // Users: `${baseUrl}account/members/`,
-  // updateUsers: `${baseUrl}account/update-member/`,
-  // Profile: `${baseUrl}account/profile/`,
-  // Blogs: `${baseUrl}blogs/blog/`,
-  // listBlogs: `${baseUrl}blogs/list/`,
-
-  // BlogContent: `${baseUrl}blogs/blog-data/`,
-  // Hospitals: `${baseUrl}/hospitals/hospitals/`,
-  // HospitalDetails: `${baseUrl}/hospitals/HospitalDetailsAPIS/`,
+  Blogs: `${baseUrl}blogs/blog/`,
+  listBlogs: `${baseUrl}blogs/list/`,
+  BlogContent: `${baseUrl}blogs/blog-data/`,
+  ServicesList: `${baseUrl}services/list/`,
+  Services: `${baseUrl}services/services/`,
 };
 
 export { baseUrl, apiUrl };
