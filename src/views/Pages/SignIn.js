@@ -52,7 +52,7 @@ function SignIn() {
       (res) => {
         showSucess("Login successful 🎉");
         saveUser(res);
-        history.replace("/admin/users");
+        history.replace("/admin/hospital");
       },
       (errMsg) => {
         showError(errMsg || "Login failed ");
