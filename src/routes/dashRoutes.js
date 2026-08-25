@@ -45,13 +45,13 @@ const dashRoutes = [
     component: Patients,
     layout: "/admin",
   },
-  {
-    path: "/users",
-    name: "Users",
-    icon: <PersonIcon color="inherit" />,
-    component: Users,
-    layout: "/admin",
-  },
+  // {
+  //   path: "/users",
+  //   name: "Users",
+  //   icon: <PersonIcon color="inherit" />,
+  //   component: Users,
+  //   layout: "/admin",
+  // },
 
   {
     path: "/blogs",
@@ -61,14 +61,14 @@ const dashRoutes = [
     component: Blogs,
     layout: "/admin",
   },
-  {
-    path: "/profile",
-    name: "Profile",
-    icon: <PersonIcon color="inherit" />,
-    secondaryNavbar: true,
-    component: Profile,
-    layout: "/admin",
-  },
+  // {
+  //   path: "/profile",
+  //   name: "Profile",
+  //   icon: <PersonIcon color="inherit" />,
+  //   secondaryNavbar: true,
+  //   component: Profile,
+  //   layout: "/admin",
+  // },
   {
     path: "/hospitalDetail",
     name: "Hospital Details",

@@ -25,7 +25,7 @@ import {
   ArgonLogoLight,
   ChakraLogoDark,
   ChakraLogoLight,
-  ProfileIcon ,
+  ProfileIcon,
   SettingsIcon,
 } from "components/Icons/Icons";
 // Custom Components
@@ -35,9 +35,8 @@ import { SidebarResponsive } from "components/Sidebar/Sidebar";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import routes from "routes/dashRoutes";
-import IndocsLogo from "assets/logo.png";
+import IndocsLogo from "assets/logo.jpeg";
 import { useHistory } from "react-router-dom";
-
 
 export default function HeaderLinks(props) {
   const {
@@ -64,9 +63,9 @@ export default function HeaderLinks(props) {
   }
 
   function handleLogout(history) {
-  sessionStorage.clear();
-  history.push("/auth/signin");
-}
+    sessionStorage.clear();
+    history.push("/auth/signin");
+  }
   return (
     <Flex
       pe={{ sm: "0px", md: "16px" }}
@@ -86,17 +85,17 @@ export default function HeaderLinks(props) {
             document.documentElement.dir ? (
               ""
             ) : (
-              <FiLogOut  color={navbarIcon} w="22px" h="22px" me="0px" />
+              <FiLogOut color={navbarIcon} w="22px" h="22px" me="0px" />
             )
           }
           leftIcon={
             document.documentElement.dir ? (
-              <FiLogOut  color={navbarIcon} w="22px" h="22px" me="0px" />
+              <FiLogOut color={navbarIcon} w="22px" h="22px" me="0px" />
             ) : (
               ""
             )
           }
-          onClick={() => handleLogout(history)} 
+          onClick={() => handleLogout(history)}
         >
           <Text display={{ sm: "none", md: "flex" }}>Log Out</Text>
         </Button>
@@ -115,7 +114,8 @@ export default function HeaderLinks(props) {
         {...rest}
         de={colorMode}
         secondary={props.secondary}
-        routes={routes}
+        // routes={routes}
+        routes={routes.filter((route) => !route.hidden)}
         {...rest}
       />
     </Flex>
