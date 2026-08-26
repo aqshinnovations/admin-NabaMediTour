@@ -11,10 +11,12 @@ import {
   PersonIcon,
   DocumentIcon,
 } from "components/Icons/Icons";
+import { FaQuoteLeft } from "react-icons/fa";
 import Doctors from "views/Doctors/Index";
 import DoctorsDetails from "views/Doctors/DoctorsDetails";
 import { FaHospital, FaUserMd } from "react-icons/fa";
 import Services from "views/Services/Services";
+import Testimonials from "views/Testimonials/Testimonials";
 
 const dashRoutes = [
   // {
@@ -85,11 +87,19 @@ const dashRoutes = [
     hidden: true,
   },
   {
-    path: "/ervices",
+    path: "/services",
     name: "services",
     icon: <PersonIcon color="inherit" />,
     secondaryNavbar: true,
     component: Services,
+    layout: "/admin",
+  },
+  {
+    path: "/testimonials",
+    name: "testimonials",
+    icon: <FaQuoteLeft color="inherit" />,
+    secondaryNavbar: true,
+    component: Testimonials,
     layout: "/admin",
   },
 ];
