@@ -27,7 +27,7 @@ import MainPanel from "../components/Layout/MainPanel";
 import PanelContainer from "../components/Layout/PanelContainer";
 import PanelContent from "../components/Layout/PanelContent";
 import bgAdmin from "assets/img/admin-background.png";
-import NabaMediTour from "assets/logo.jpeg";
+import NabaMediTour from "assets/Nabameditour.png";
 import BlogDetails from "views/Blogs/BlogDetails";
 
 export default function Dashboard(props) {
@@ -125,7 +125,7 @@ export default function Dashboard(props) {
             <img
               src={NabaMediTour}
               alt="Indocs"
-              style={{ height: "100px", width: "auto" }} // 👈 only control height
+              style={{ height: "auto", width: "auto" }} // 👈 only control height
             />
           </Box>
         }

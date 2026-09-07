@@ -379,16 +379,6 @@ function HospitalDetails() {
                       {/* LEFT SIDE (Image + Details) */}
                       <div style={{ display: "flex", gap: "20px" }}>
                         {/* Image */}
-                        <img
-                          src={hospitalDetails.image}
-                          alt="hospital"
-                          style={{
-                            width: "50%",
-                            borderRadius: "10px",
-                            objectFit: "cover",
-                            border: "1px solid black",
-                          }}
-                        />
 
                         {/* Details */}
                         <div style={{ padding: 10 }}>
@@ -401,6 +391,38 @@ function HospitalDetails() {
                           </p>
 
                           <p>{hospitalDetails.description_en}</p>
+                          <div>
+                            {hospitalDetails.images?.length > 0 ? (
+                              <div
+                                style={{
+                                  display: "flex",
+                                  gap: "10px",
+                                  width: "100%",
+                                  overflowX: "auto",
+                                  paddingBottom: "5px",
+                                }}
+                              >
+                                {hospitalDetails.images.map((item, index) => (
+                                  <img
+                                    key={item.id}
+                                    src={item.image}
+                                    alt={`hospital-${index + 1}`}
+                                    style={{
+                                      width: "200px",
+                                      height: "130px",
+                                      minWidth: "180px",
+                                      objectFit: "cover",
+                                      borderRadius: "10px",
+                                      border: "1px solid #ccc",
+                                      cursor: "pointer",
+                                    }}
+                                  />
+                                ))}
+                              </div>
+                            ) : (
+                              <Text>No hospital images available</Text>
+                            )}
+                          </div>
                           <div
                             style={{
                               display: "flex",
@@ -414,7 +436,6 @@ function HospitalDetails() {
 
                       {/* RIGHT SIDE (Buttons) */}
                     </div>
-
                     {/*  */}
                     <Flex
                       justify="space-between"
@@ -479,7 +500,6 @@ function HospitalDetails() {
                         Add Procedures
                       </Button>
                     </Flex>
-
                     <ProcedureList
                       procedures={hospitalDetails.procedures}
                       onEdit={handleEditProcedure}
@@ -503,7 +523,6 @@ function HospitalDetails() {
                         Add Doctors
                       </Button>
                     </Flex>
-
                     <DoctorList
                       doctors={hospitalDetails.doctors}
                       onEdit={handleEditDoctor}

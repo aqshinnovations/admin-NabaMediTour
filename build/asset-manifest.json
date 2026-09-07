@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.2a9a26f2.css",
-    "main.js": "/static/js/main.f665e0df.js",
+    "main.js": "/static/js/main.bfc46063.js",
     "static/media/signInImage.png": "/static/media/signInImage.dc6e0e9a8fb1a247b2d6.png",
     "static/media/BgSignUp.png": "/static/media/BgSignUp.9b1e961ca6543cb35854.png",
     "static/media/ImageArchitect3.png": "/static/media/ImageArchitect3.db5ecbbde9f4af32d7d3.png",
@@ -9,6 +9,7 @@
     "static/media/BackgroundCard1.png": "/static/media/BackgroundCard1.55c062c0873c8bc288f8.png",
     "static/media/ImageArchitect2.png": "/static/media/ImageArchitect2.960c2b9cde21744e7afb.png",
     "static/media/ImageArchitect1.png": "/static/media/ImageArchitect1.032614a5ad672027d4b3.png",
+    "static/media/Nabameditour.png": "/static/media/Nabameditour.b80ccef1044e2fe33a82.png",
     "static/media/avatar2.png": "/static/media/avatar2.5692c39db4f8c0ea999e.png",
     "static/media/avatar9.png": "/static/media/avatar9.2db98189f85998b61c6b.png",
     "static/media/avatar7.png": "/static/media/avatar7.00e8f4f007f327b73e71.png",
@@ -23,10 +24,10 @@
     "static/media/SidebarHelpImage.png": "/static/media/SidebarHelpImage.bace667c8b452f88fa9d.png",
     "index.html": "/index.html",
     "main.2a9a26f2.css.map": "/static/css/main.2a9a26f2.css.map",
-    "main.f665e0df.js.map": "/static/js/main.f665e0df.js.map"
+    "main.bfc46063.js.map": "/static/js/main.bfc46063.js.map"
   },
   "entrypoints": [
     "static/css/main.2a9a26f2.css",
-    "static/js/main.f665e0df.js"
+    "static/js/main.bfc46063.js"
   ]
 }

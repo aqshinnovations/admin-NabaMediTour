@@ -30,7 +30,7 @@ import { showSucess, showError } from "utils/toast";
 import EditHospital from "./EditHospital";
 import HospitalTable from "components/Tables/HospitalTable";
 import AddHospital from "./AddHospital";
-
+import { truncateDescription } from "utils/helper";
 function Hospitals() {
   const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
@@ -124,7 +124,7 @@ function Hospitals() {
                 hospitals={Hospitals.map((hospital) => ({
                   id: hospital.id,
                   name: hospital.name_en,
-                  description: hospital.description_en,
+                  description: truncateDescription(hospital.description_en, 15),
                   image: hospital.image,
                   location: hospital.location_en,
                 }))}

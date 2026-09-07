@@ -22,7 +22,7 @@ import { useHistory } from "react-router-dom";
 import { showError, showSucess } from "utils/toast";
 import { saveUser } from "utils/session";
 import { apiUrl } from "utils/api";
-import NabaMediTour from "../../assets/logo.jpeg";
+import NabaMediTour from "../../assets/Nabameditour.png";
 function SignIn() {
   const textColor = useColorModeValue("gray.700", "white");
   const bgForm = useColorModeValue("white", "navy.800");
@@ -100,8 +100,8 @@ function SignIn() {
                 src={NabaMediTour}
                 alt="NabaMediTour"
                 style={{
-                  height: "100px",
-                  width: "100px",
+                  height: "auto",
+                  width: "auto",
                   objectFit: "contain",
                 }}
               />

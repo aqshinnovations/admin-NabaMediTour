@@ -10,6 +10,7 @@ import {
   StatsIcon,
   PersonIcon,
   DocumentIcon,
+  CreativeTimLogo,
 } from "components/Icons/Icons";
 import { FaQuoteLeft } from "react-icons/fa";
 import Doctors from "views/Doctors/Index";
@@ -17,7 +18,7 @@ import DoctorsDetails from "views/Doctors/DoctorsDetails";
 import { FaHospital, FaUserMd } from "react-icons/fa";
 import Services from "views/Services/Services";
 import Testimonials from "views/Testimonials/Testimonials";
-
+import DoctorsCategory from "views/DoctorsCategory/DoctorsCategory";
 const dashRoutes = [
   // {
   //   path: "/dashboard",
@@ -100,6 +101,14 @@ const dashRoutes = [
     icon: <FaQuoteLeft color="inherit" />,
     secondaryNavbar: true,
     component: Testimonials,
+    layout: "/admin",
+  },
+  {
+    path: "/DoctorsCategory",
+    name: "DoctorsCategory",
+    icon: <CreativeTimLogo color="inherit" />,
+    secondaryNavbar: true,
+    component: DoctorsCategory,
     layout: "/admin",
   },
 ];
