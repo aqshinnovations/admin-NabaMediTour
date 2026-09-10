@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
+import { showError, showSucess } from "utils/toast";
+
 import {
   Flex,
   Text,
@@ -30,6 +32,8 @@ import UpdateProcedure from "./components/Procedures/updateProcedures";
 import DoctorList from "./components/Doctors/DoctorList";
 import AddDoctor from "./components/Doctors/addDoctor";
 import UpdateDoctor from "./components/Doctors/updateDoctor";
+import ImagesList from "./components/Images/ImagesList";
+import AddImages from "./components/Images/addImages";
 function HospitalDetails() {
   const location = useLocation();
   const { colorMode } = useColorMode();
@@ -84,6 +88,12 @@ function HospitalDetails() {
     onClose: onUpdateDoctorClose,
   } = useDisclosure();
 
+  const {
+    isOpen: isImagesOpen,
+    onOpen: onImagesOpen,
+    onClose: onImagesClose,
+  } = useDisclosure();
+
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [selectedFacility, setSelectedFacility] = useState(null);
   const [selectedSpecialty, setSelectedSpecialty] = useState(null);
@@ -93,6 +103,7 @@ function HospitalDetails() {
   const [hospitalID, setHospitalID] = useState(id);
   const [hospitalDetails, setHospitalDetails] = useState(null);
   const [deleteType, setDeleteType] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
   console.log("Hospital Data:", hospital);
 
   useEffect(() => {
@@ -125,6 +136,11 @@ function HospitalDetails() {
     );
   };
 
+  const handleDeleteImageClick = (image) => {
+    setSelectedImage(image);
+    setDeleteType("image");
+    onDeleteOpen();
+  };
   // const handleDeleteClick = (facility) => {
   //   setSelectedFacility(facility);
   //   onDeleteOpen();
@@ -261,16 +277,18 @@ function HospitalDetails() {
         selectedProcedure.id,
         (response) => {
           console.log("Procedure deleted:", response);
-
+          showSucess("Procedure Deleted Successfully! 🎉");
           onDeleteClose();
           setSelectedProcedure(null);
           setDeleteType(null);
 
           // Refresh hospital details
+
           HospitalsData();
         },
         (error) => {
           console.log("Delete procedure error:", error);
+          showError(error || "Something went wrong");
         },
       );
     }
@@ -291,6 +309,27 @@ function HospitalDetails() {
         },
         (error) => {
           console.log("Delete doctor error:", error);
+        },
+      );
+    }
+    if (deleteType === "image") {
+      if (!selectedImage?.id) return;
+
+      apiCallSecureDelete(
+        apiUrl.HospitalImages,
+        selectedImage.id,
+        (response) => {
+          console.log("Image deleted:", response);
+          showSucess("Image Deleted Successfully! 🎉");
+          onDeleteClose();
+          setSelectedImage(null);
+          setDeleteType(null);
+
+          HospitalsData();
+        },
+        (error) => {
+          console.log("Delete image error:", error);
+          showError(error || "Failed to delete image");
         },
       );
     }
@@ -402,7 +441,7 @@ function HospitalDetails() {
                                   paddingBottom: "5px",
                                 }}
                               >
-                                {hospitalDetails.images.map((item, index) => (
+                                {/* {hospitalDetails.images.map((item, index) => (
                                   <img
                                     key={item.id}
                                     src={item.image}
@@ -417,7 +456,7 @@ function HospitalDetails() {
                                       cursor: "pointer",
                                     }}
                                   />
-                                ))}
+                                ))} */}
                               </div>
                             ) : (
                               <Text>No hospital images available</Text>
@@ -436,6 +475,30 @@ function HospitalDetails() {
 
                       {/* RIGHT SIDE (Buttons) */}
                     </div>
+                    {/*  Images*/}
+                    <Flex
+                      justify="space-between"
+                      align="center"
+                      mb="15px"
+                      px="10px"
+                    >
+                      <Text fontSize="lg" fontWeight="bold">
+                        Images
+                      </Text>
+
+                      <Button
+                        variant={colorMode === "primary" ? "dark" : "primary"}
+                        onClick={onImagesOpen}
+                      >
+                        Add Images
+                      </Button>
+                    </Flex>
+
+                    <ImagesList
+                      procedures={hospitalDetails.images}
+                      onEdit={handleEditProcedure}
+                      onDelete={handleDeleteImageClick}
+                    />
                     {/*  */}
                     <Flex
                       justify="space-between"
@@ -553,6 +616,8 @@ function HospitalDetails() {
                 ? "Procedure"
                 : deleteType === "doctor"
                 ? "Doctor"
+                : deleteType === "image"
+                ? "Image"
                 : "Facility"}
             </AlertDialogHeader>
             <AlertDialogBody>
@@ -564,6 +629,8 @@ function HospitalDetails() {
                   ? selectedProcedure?.name_en
                   : deleteType === "doctor"
                   ? selectedDoctor?.name_en
+                  : deleteType === "image"
+                  ? "this hospital image"
                   : selectedFacility?.name_en}
               </b>
               ?
@@ -672,6 +739,15 @@ function HospitalDetails() {
           setSelectedDoctor(null);
           onUpdateDoctorClose();
           HospitalsData();
+        }}
+      />
+      <AddImages
+        isOpen={isImagesOpen}
+        onClose={onImagesClose}
+        hospitalId={hospitalID}
+        onSuccess={() => {
+          HospitalsData();
+          onImagesClose();
         }}
       />
     </Flex>

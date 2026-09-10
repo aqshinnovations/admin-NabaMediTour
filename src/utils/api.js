@@ -41,6 +41,7 @@ const apiUrl = {
   Testimonials: `${baseUrl}testimonials/testimonials/`,
   testimonialsList: `${baseUrl}testimonials/testimonials/list`,
   DoctorsCategory: `${baseUrl}doctors/category/`,
+  HospitalImages: `${baseUrl}hospitals/images/`,
 };
 
 export { baseUrl, apiUrl };
