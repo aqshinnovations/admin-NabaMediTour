@@ -34,6 +34,8 @@ import AddDoctor from "./components/Doctors/addDoctor";
 import UpdateDoctor from "./components/Doctors/updateDoctor";
 import ImagesList from "./components/Images/ImagesList";
 import AddImages from "./components/Images/addImages";
+import AddGovtLogo from "./components/GovtLogo/addGovtLogo";
+import GovtLogoList from "./components/GovtLogo/GovtLogoList";
 function HospitalDetails() {
   const location = useLocation();
   const { colorMode } = useColorMode();
@@ -75,6 +77,13 @@ function HospitalDetails() {
     onClose: onUpdateProcedureClose,
   } = useDisclosure();
 
+  const {
+    isOpen: isGovtLogoOpen,
+    onOpen: onGovtLogoOpen,
+    onClose: onGovtLogoClose,
+  } = useDisclosure();
+
+  const [selectedGovtLogo, setSelectedGovtLogo] = useState(null);
   const [selectedProcedure, setSelectedProcedure] = useState(null);
   const {
     isOpen: isDoctorOpen,
@@ -227,6 +236,11 @@ function HospitalDetails() {
     onDeleteOpen();
   };
 
+  const handleDeleteGovtLogoClick = (logo) => {
+    setSelectedGovtLogo(logo);
+    setDeleteType("govtLogo");
+    onDeleteOpen();
+  };
   const handleDelete = () => {
     if (deleteType === "facility") {
       if (!selectedFacility?.id) return;
@@ -330,6 +344,29 @@ function HospitalDetails() {
         (error) => {
           console.log("Delete image error:", error);
           showError(error || "Failed to delete image");
+        },
+      );
+    }
+    if (deleteType === "govtLogo") {
+      if (!selectedGovtLogo?.id) return;
+
+      apiCallSecureDelete(
+        apiUrl.GovtLogo,
+        selectedGovtLogo.id,
+        (response) => {
+          console.log("Government logo deleted:", response);
+
+          showSucess("Government Logo Deleted Successfully! 🎉");
+
+          onDeleteClose();
+          setSelectedGovtLogo(null);
+          setDeleteType(null);
+
+          HospitalsData();
+        },
+        (error) => {
+          console.log("Delete government logo error:", error);
+          showError(error || "Failed to delete government logo");
         },
       );
     }
@@ -440,24 +477,7 @@ function HospitalDetails() {
                                   overflowX: "auto",
                                   paddingBottom: "5px",
                                 }}
-                              >
-                                {/* {hospitalDetails.images.map((item, index) => (
-                                  <img
-                                    key={item.id}
-                                    src={item.image}
-                                    alt={`hospital-${index + 1}`}
-                                    style={{
-                                      width: "200px",
-                                      height: "130px",
-                                      minWidth: "180px",
-                                      objectFit: "cover",
-                                      borderRadius: "10px",
-                                      border: "1px solid #ccc",
-                                      cursor: "pointer",
-                                    }}
-                                  />
-                                ))} */}
-                              </div>
+                              ></div>
                             ) : (
                               <Text>No hospital images available</Text>
                             )}
@@ -591,6 +611,30 @@ function HospitalDetails() {
                       onEdit={handleEditDoctor}
                       onDelete={handleDeleteDoctorClick}
                     />
+
+                    {/*  Govt Log*/}
+                    <Flex
+                      justify="space-between"
+                      align="center"
+                      mb="15px"
+                      px="10px"
+                    >
+                      <Text fontSize="lg" fontWeight="bold">
+                        Govt Logo
+                      </Text>
+
+                      <Button
+                        variant={colorMode === "primary" ? "dark" : "primary"}
+                        onClick={onImagesOpen}
+                      >
+                        Add Govt Logo
+                      </Button>
+                    </Flex>
+                    <GovtLogoList
+                      procedures={hospitalDetails.government_scheme_logos}
+                      onEdit={handleEditProcedure}
+                      onDelete={handleDeleteGovtLogoClick}
+                    />
                     {/*  */}
                   </CardBody>
                 </>
@@ -618,6 +662,8 @@ function HospitalDetails() {
                 ? "Doctor"
                 : deleteType === "image"
                 ? "Image"
+                : deleteType === "govtLogo"
+                ? "Government Logo"
                 : "Facility"}
             </AlertDialogHeader>
             <AlertDialogBody>
@@ -631,6 +677,8 @@ function HospitalDetails() {
                   ? selectedDoctor?.name_en
                   : deleteType === "image"
                   ? "this hospital image"
+                  : deleteType === "govtLogo"
+                  ? "this government scheme logo"
                   : selectedFacility?.name_en}
               </b>
               ?
@@ -742,6 +790,15 @@ function HospitalDetails() {
         }}
       />
       <AddImages
+        isOpen={isImagesOpen}
+        onClose={onImagesClose}
+        hospitalId={hospitalID}
+        onSuccess={() => {
+          HospitalsData();
+          onImagesClose();
+        }}
+      />
+      <AddGovtLogo
         isOpen={isImagesOpen}
         onClose={onImagesClose}
         hospitalId={hospitalID}

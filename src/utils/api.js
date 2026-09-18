@@ -5,8 +5,8 @@ import HospitalDetails from "views/hospitals/HospitalDetails";
 // const baseUrl = "http://localhost:8000/";
 const baseUrl = " https://api.nabameditour.com/";
 
-// const imageBaseUrl = "http://localhost:8000";
-const imageBaseUrl = " https://api.nabameditour.com";
+const imageBaseUrl = "http://localhost:8000";
+// const imageBaseUrl = " https://api.nabameditour.com";
 
 const apiUrl = {
   baseUrl: `${baseUrl}`,
@@ -42,6 +42,7 @@ const apiUrl = {
   testimonialsList: `${baseUrl}testimonials/testimonials/list`,
   DoctorsCategory: `${baseUrl}doctors/category/`,
   HospitalImages: `${baseUrl}hospitals/images/`,
+  GovtLogo: `${baseUrl}hospitals/government-scheme-logos/`,
 };
 
 export { baseUrl, apiUrl };
