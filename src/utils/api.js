@@ -5,8 +5,8 @@ import HospitalDetails from "views/hospitals/HospitalDetails";
 // const baseUrl = "http://localhost:8000/";
 const baseUrl = " https://api.nabameditour.com/";
 
-const imageBaseUrl = "http://localhost:8000";
-// const imageBaseUrl = " https://api.nabameditour.com";
+// const imageBaseUrl = "http://localhost:8000";
+const imageBaseUrl = " https://api.nabameditour.com";
 
 const apiUrl = {
   baseUrl: `${baseUrl}`,

@@ -15,9 +15,9 @@ import {
 } from "@chakra-ui/react";
 import { apiCallPostWithForm, apiUrl } from "utils/api";
 import { showError, showSucess } from "utils/toast";
-function addGallery({ isOpen, onClose, hospitalId, onSuccess }) {
+function addGallery({ isOpen, onClose, doctorId, onSuccess }) {
   const [formData, setFormData] = useState({
-    hospital_id: hospitalId || "",
+    doctorId: doctorId || "",
 
     image: null,
   });
@@ -45,7 +45,7 @@ function addGallery({ isOpen, onClose, hospitalId, onSuccess }) {
 
     const data = new FormData();
 
-    data.append("doctor_id", hospitalId);
+    data.append("doctor_id", doctorId);
 
     if (formData.image) {
       data.append("image", formData.image);
@@ -57,13 +57,13 @@ function addGallery({ isOpen, onClose, hospitalId, onSuccess }) {
       apiUrl.Gallery,
       data,
       (response) => {
-        console.log("Procedure added:", response);
+        console.log("Gallary  added:", response);
         showSucess("Image Added Successfully! 🎉");
 
         setLoading(false);
 
         setFormData({
-          hospital_id: hospitalId || "",
+          doctorId: doctorId || "",
 
           image: null,
         });
@@ -87,7 +87,7 @@ function addGallery({ isOpen, onClose, hospitalId, onSuccess }) {
     if (loading) return;
 
     setFormData({
-      hospital_id: hospitalId || "",
+      doctorId: doctorId || "",
       name_en: "",
       name_ar: "",
       description_en: "",
